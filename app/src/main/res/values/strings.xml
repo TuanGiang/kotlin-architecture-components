@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Kidtube</string>
+    <string name="bottom_bar_home">Home</string>
+    <string name="bottom_bar_owner">My Video</string>
+    <string name="bottom_bar_channel">Channel</string>
+    <string name="bottom_bar_account">Account</string>
+</resources>
