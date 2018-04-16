@@ -3,6 +3,7 @@ package com.giangnt.kidtube.model
 import com.google.gson.annotations.SerializedName
 
 data class Channel(
+        @SerializedName("id")
         val id: String,
         @SerializedName("publicAt")
         val publicAt: String,

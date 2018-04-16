@@ -1,4 +1,4 @@
-package com.giangnt.kidtube.base
+package com.giangnt.kidtube.base.fragment
 
 import android.support.v4.app.Fragment
 
