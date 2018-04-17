@@ -1,7 +1,7 @@
 package com.giangnt.kidtube.channel
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
+import com.giangnt.kidtube.base.viewmodel.LoginViewModel
 
-class ChannelListViewModel(application: Application) : AndroidViewModel(application)  {
+class ChannelListViewModel(application: Application) : LoginViewModel(application) {
 }

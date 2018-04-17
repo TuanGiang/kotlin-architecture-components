@@ -4,4 +4,7 @@
     <string name="bottom_bar_owner">My Video</string>
     <string name="bottom_bar_channel">Channel</string>
     <string name="bottom_bar_account">Account</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="action_login">Login</string>
 </resources>

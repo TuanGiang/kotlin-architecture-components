@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="user"
+            type="com.giangnt.kidtube.model.User" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/accountGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="@{user==null ? View.INVISIBLE : View.VISIBLE}"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/lbHi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hi: " />
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{user.email}" />
+    </LinearLayout>
+</layout>

@@ -2,7 +2,6 @@ package com.giangnt.kidtube
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
 import com.giangnt.kidtube.account.AccountFragment
 import com.giangnt.kidtube.channel.ChannelListFragment

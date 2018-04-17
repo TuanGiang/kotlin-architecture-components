@@ -14,6 +14,11 @@ import com.giangnt.kidtube.model.MovieItem
  * Location: com.giangnt.kidtube.repo - RepoInf
  */
 public class Repo {
+
+    fun getHome(pageIndex: Int, pageSize: Int = 12): List<MovieItem> {
+        return Repo.getHome(pageIndex, pageSize)
+    }
+
     companion object {
         public fun getHome(pageIndex: Int, pageSize: Int = 12): List<MovieItem> {
             val movies = ArrayList<MovieItem>()
