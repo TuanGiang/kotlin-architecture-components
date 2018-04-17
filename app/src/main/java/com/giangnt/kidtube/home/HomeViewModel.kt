@@ -18,23 +18,33 @@ import com.giangnt.kidtube.repo.Repo
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.home - HomeViewModel
  */
-class HomeViewModel(application: Application, repo: Repo) : LoginViewModel(application) {
+class HomeViewModel(application: Application, var repo: Repo) : LoginViewModel(application) {
 
-    val movieLiveData = MutableLiveData<List<MovieItem>>()
+    val movieLiveData = MutableLiveData<ArrayList<MovieItem>>()
+
+    var pageIndex = 0
 
     init {
-        movieLiveData.postValue(repo.getHome(1))
+        movieLiveData.postValue(repo.getHome(pageIndex))
     }
 
-    fun getMovies(): LiveData<List<MovieItem>> {
+    fun getObservableMovies(): LiveData<ArrayList<MovieItem>> {
         return movieLiveData
     }
+
+    fun getMoreHome() {
+        pageIndex++
+        val items = repo.getHome(pageIndex)
+        val currentItems = movieLiveData.value
+        currentItems!!.addAll(items)
+        movieLiveData.postValue(currentItems)
+    }
+
 
     class Factory(val application: Application, val repo: Repo) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return HomeViewModel(application, repo) as T
         }
     }
-
 
 }

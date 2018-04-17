@@ -15,19 +15,19 @@ import com.giangnt.kidtube.model.MovieItem
  */
 public class Repo {
 
-    fun getHome(pageIndex: Int, pageSize: Int = 12): List<MovieItem> {
+    fun getHome(pageIndex: Int, pageSize: Int = 12): ArrayList<MovieItem> {
         return Repo.getHome(pageIndex, pageSize)
     }
 
     companion object {
-        public fun getHome(pageIndex: Int, pageSize: Int = 12): List<MovieItem> {
+        public fun getHome(pageIndex: Int, pageSize: Int = 12): ArrayList<MovieItem> {
             val movies = ArrayList<MovieItem>()
             for (i in 0..pageSize) {
-                val id = pageIndex.toString() + " " + i.toString()
-                val movieDetail = Movie(id, "", "", "Title : " + id, "Description : " + id, "", ""
+                val id = "Index: " + pageIndex.toString() + " Position: " + i.toString()
+                val movieDetail = Movie(id, "", "https://www.w3schools.com/howto/img_fjords.jpg", "Movie Title : " + id, "Description : " + id, "", ""
                         , "", "", " Channel ID : " + id, " Channel Title : " + id, id, "Duration: " + id, "" +
                         "", "", pageIndex * pageSize + i, pageIndex * pageSize, pageIndex)
-                val channelDetail = Channel(id, "", "", "Title : " + id, "Description : " + id, "", ""
+                val channelDetail = Channel(id, "", "https://www.jqueryscript.net/images/Simplest-Responsive-jQuery-Image-Lightbox-Plugin-simple-lightbox.jpg", "Channel Title : " + id, "Description : " + id, "", ""
                         , "")
 
                 val movieItem = MovieItem(movieDetail, channelDetail)

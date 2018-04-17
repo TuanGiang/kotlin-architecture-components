@@ -13,12 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/accountGroup"
-            layout="@layout/item_account"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:user="@{homeViewModel.user}" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcMovie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="LinearLayoutManager">
+
+        </android.support.v7.widget.RecyclerView>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

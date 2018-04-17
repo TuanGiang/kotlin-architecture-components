@@ -25,21 +25,23 @@ class MainActivity : AppCompatActivity(), FragNavController.TransactionListener,
         bottomBar.enableAnimation(false)
         bottomBar.enableItemShiftingMode(false)
         bottomBar.enableShiftingMode(false)
-        fragNavController = FragNavController.newBuilder(savedInstanceState, supportFragmentManager, R.id.mainContainer)
-                .transactionListener(this)
-                .rootFragmentListener(this, TAB_COUNT)
-                .switchController { i, _ ->
-                    when (i) {
-                        TAB_HOME -> bottomBar.selectedItemId = R.id.action_home
-                        TAB_OWNER -> bottomBar.selectedItemId = R.id.action_owner
-                        TAB_CHANNEL -> bottomBar.selectedItemId = R.id.action_account
-                        TAB_ACCOUNT -> bottomBar.selectedItemId = R.id.action_account
-                        else -> {
-                            throw Exception("Invalid tab")
+        if (savedInstanceState == null) {
+            fragNavController = FragNavController.newBuilder(savedInstanceState, supportFragmentManager, R.id.mainContainer)
+                    .transactionListener(this)
+                    .rootFragmentListener(this, TAB_COUNT)
+                    .switchController { i, _ ->
+                        when (i) {
+                            TAB_HOME -> bottomBar.selectedItemId = R.id.action_home
+                            TAB_OWNER -> bottomBar.selectedItemId = R.id.action_owner
+                            TAB_CHANNEL -> bottomBar.selectedItemId = R.id.action_account
+                            TAB_ACCOUNT -> bottomBar.selectedItemId = R.id.action_account
+                            else -> {
+                                throw Exception("Invalid tab")
+                            }
                         }
                     }
-                }
-                .build()
+                    .build()
+        }
 
         bottomBar.setOnNavigationItemReselectedListener({ fragNavController.clearStack() })
 
