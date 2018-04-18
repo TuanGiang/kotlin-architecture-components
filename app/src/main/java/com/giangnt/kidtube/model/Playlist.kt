@@ -1,8 +1,9 @@
 package com.giangnt.kidtube.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-data class Playlist (
+data class Playlist(
         @SerializedName("id")
         val id: String,
         @SerializedName("publicAt")
@@ -20,9 +21,9 @@ data class Playlist (
         @SerializedName("updatedAt")
         val updatedAt: String,
         @SerializedName("itemCount")
-        val itemCount :String,
+        val itemCount: Int,
         @SerializedName("channelId")
-        val channelId :String,
+        val channelId: String,
         @SerializedName("channelTitle")
-        val channelTitle :String
-)
+        val channelTitle: String
+) : Serializable

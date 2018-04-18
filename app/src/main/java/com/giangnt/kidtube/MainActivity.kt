@@ -5,12 +5,22 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.giangnt.kidtube.account.AccountFragment
 import com.giangnt.kidtube.channel.ChannelListFragment
+import com.giangnt.kidtube.channel.detail.ChannelFragment
+import com.giangnt.kidtube.channel.home.ChannelHomeFragment
+import com.giangnt.kidtube.channel.movies.ChannelVideoFragment
+import com.giangnt.kidtube.channel.movies.ChannelVideoViewModel
+import com.giangnt.kidtube.channel.playlist.ChannelPlaylistFragment
 import com.giangnt.kidtube.home.HomeFragment
+import com.giangnt.kidtube.model.Channel
+import com.giangnt.kidtube.model.MovieItem
+import com.giangnt.kidtube.movie.MoviePlayActivity
+import com.giangnt.kidtube.nav.ChannelNav
+import com.giangnt.kidtube.nav.MovieNav
 import com.giangnt.kidtube.owner.MyVideoFragment
 import com.ncapdevi.fragnav.FragNavController
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), FragNavController.TransactionListener, FragNavController.RootFragmentListener {
+class MainActivity : AppCompatActivity(), FragNavController.TransactionListener, FragNavController.RootFragmentListener, ChannelNav, MovieNav {
 
     private val TAB_HOME = 0
     private val TAB_OWNER = 1
@@ -62,6 +72,15 @@ class MainActivity : AppCompatActivity(), FragNavController.TransactionListener,
             }
             true
         })
+    }
+
+    override fun onGoChannelDetail(channel: Channel) {
+        fragNavController.pushFragment(ChannelFragment.newInstance(channel))
+
+    }
+
+    override fun onGoPlayVideo(movieItem: MovieItem) {
+        startActivity(MoviePlayActivity.getIntent(this, movieItem))
     }
 
     override fun getRootFragment(p0: Int): Fragment {

@@ -9,6 +9,10 @@
         <variable
             name="movieItem"
             type="com.giangnt.kidtube.model.MovieItem" />
+
+        <variable
+            name="callBack"
+            type="com.giangnt.kidtube.home.HomeClickCallback" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -23,6 +27,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:onClick="@{()->callBack.onClick(movieItem)}"
             android:scaleType="fitXY"
             app:imageUrl="@{movieItem.video.thumbnail}"
             app:layout_constraintDimensionRatio="2:1"
@@ -37,6 +42,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:scaleType="centerCrop"
+            android:onClick="@{()->callBack.onClickChannel(movieItem.channel)}"
             app:imageUrl="@{movieItem.channel.thumbnail}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgMovie" />

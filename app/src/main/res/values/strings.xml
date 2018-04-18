@@ -7,4 +7,7 @@
     <string name="label_email">Email</string>
     <string name="label_password">Password</string>
     <string name="action_login">Login</string>
+    <string name="action_add_my_video">Add to</string>
+    <string name="label_up_next">Up next</string>
+    <string name="action_auto_play">Auto play</string>
 </resources>

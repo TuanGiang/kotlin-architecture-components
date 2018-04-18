@@ -1,4 +1,4 @@
-package com.giangnt.kidtube.home
+package com.giangnt.kidtube.channel.movies
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -14,7 +14,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
 import com.giangnt.kidtube.base.fragment.LoadDataFragment
+import com.giangnt.kidtube.databinding.FragmentChannelVideoBinding
 import com.giangnt.kidtube.databinding.FragmentHomeBinding
+import com.giangnt.kidtube.home.HomeViewModel
 import com.giangnt.kidtube.model.Channel
 import com.giangnt.kidtube.model.MovieItem
 import com.giangnt.kidtube.model.User
@@ -22,13 +24,21 @@ import com.giangnt.kidtube.nav.MovieNav
 import com.giangnt.kidtube.repo.Repo
 import com.giangnt.kidtube.support.EndlessRecyclerViewScrollListener
 
+/**
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * <p>
+ * <p>
+ * Copyright 2011 - 2016 ARIS-VN, Inc. All rights reserved.
+ * Created by: giang.nt on 2:15 PM - 4/18/2018
+ * Email: giang.nt@aris-vn.com
+ * Location: com.giangnt.kidtube.channel - ChannelVideoFragment
+ */
+class ChannelVideoFragment : LoadDataFragment(), ChannelMovieCallback {
 
-class HomeFragment : LoadDataFragment(), HomeClickCallback {
-
-    lateinit var binding: FragmentHomeBinding
-    lateinit var homeAdapter: HomeAdapter
+    lateinit var binding: FragmentChannelVideoBinding
+    lateinit var channelMovieAdapter: ChannelMovieAdapter
     lateinit var endlessScroll: EndlessRecyclerViewScrollListener
-    lateinit var model: HomeViewModel
+    lateinit var model: ChannelVideoViewModel
 
     var nav: MovieNav? = null
 
@@ -47,17 +57,17 @@ class HomeFragment : LoadDataFragment(), HomeClickCallback {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_channel_video, container, false)
 
-        homeAdapter = HomeAdapter(this)
-        binding.rcMovie.adapter = homeAdapter
+        channelMovieAdapter = ChannelMovieAdapter(this)
+        binding.rcMovie.adapter = channelMovieAdapter
         val mDividerItemDecoration = DividerItemDecoration(binding.rcMovie.context,
                 DividerItemDecoration.VERTICAL)
         binding.rcMovie.addItemDecoration(mDividerItemDecoration)
 
         endlessScroll = object : EndlessRecyclerViewScrollListener(binding.rcMovie.layoutManager as LinearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                model.getMoreHome()
+                model.getMore()
             }
         }
         binding.rcMovie.clearOnScrollListeners()
@@ -70,22 +80,19 @@ class HomeFragment : LoadDataFragment(), HomeClickCallback {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val factory = HomeViewModel.Factory(
+        val factory = ChannelVideoViewModel.Factory(
                 activity!!.application, Repo())
 
         model = ViewModelProviders.of(this, factory)
-                .get(HomeViewModel::class.java)
+                .get(ChannelVideoViewModel::class.java)
 
-        binding.homeViewModel = model
         subscribeUi(model)
     }
 
-    private fun subscribeUi(viewModel: HomeViewModel) {
-        viewModel.getObservableUser().observe(this, Observer<User> { user -> viewModel.setUser(user) })
-
+    private fun subscribeUi(viewModel: ChannelVideoViewModel) {
 
         viewModel.getObservableMovies().observe(this, Observer<ArrayList<MovieItem>> { items ->
-            items.let { homeAdapter.setList(items!!) }
+            items.let { channelMovieAdapter.setList(items!!) }
             binding.executePendingBindings()
         })
     }
@@ -94,14 +101,12 @@ class HomeFragment : LoadDataFragment(), HomeClickCallback {
         nav?.onGoPlayVideo(movieItem)
     }
 
-    override fun onClickChannel(channel: Channel) {
-        nav?.onGoChannelDetail(channel)
-    }
-
     companion object {
-        public fun newInstance(): HomeFragment {
+        val CHANNEL_ID = "CHANNEL_ID"
+        public fun newInstance(channelId: String): ChannelVideoFragment {
             val args = Bundle()
-            val fragment = HomeFragment()
+            args.putString(CHANNEL_ID, channelId)
+            val fragment = ChannelVideoFragment()
             fragment.arguments = args
             return fragment
         }

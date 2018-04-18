@@ -1,6 +1,7 @@
 package com.giangnt.kidtube.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Channel(
         @SerializedName("id")
@@ -19,4 +20,4 @@ data class Channel(
         val createdAt: String,
         @SerializedName("updatedAt")
         val updatedAt: String
-)
+) : Serializable

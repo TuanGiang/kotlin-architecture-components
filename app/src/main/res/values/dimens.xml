@@ -2,4 +2,8 @@
 <resources>
     <dimen name="icon_channel_width">60dp</dimen>
     <dimen name="icon_channel_height">60dp</dimen>
+    <dimen name="movie_suggest_width">180dp</dimen>
+    <dimen name="channel_thumbnail_width">120dp</dimen>
+    <dimen name="channel_cover_height">100dp</dimen>
+    <dimen name="playlist_thumbnail_width">180dp</dimen>
 </resources>

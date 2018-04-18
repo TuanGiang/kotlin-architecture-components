@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="callback"
+            type="com.giangnt.kidtube.channel.playlist.ChannelPlaylistCallback" />
+
+        <variable
+            name="playlist"
+            type="com.giangnt.kidtube.model.Playlist" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{()->callback.onClick(playlist)}"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/imgPlaylist"
+            android:layout_width="@dimen/playlist_thumbnail_width"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            app:imageUrl="@{playlist.thumbnail}"
+            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0."
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvPlaylistTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:text="@{playlist.title}"
+            app:layout_constraintEnd_toStartOf="@+id/ibtnAddTo"
+            app:layout_constraintStart_toEndOf="@+id/imgPlaylist"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/ibtnAddTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/btn_dialog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvItemCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@{Integer.toString(playlist.itemCount)}"
+            app:layout_constraintStart_toEndOf="@+id/imgPlaylist"
+            app:layout_constraintTop_toBottomOf="@+id/tvPlaylistTitle" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

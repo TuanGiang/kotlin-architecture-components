@@ -1,9 +1,95 @@
 package com.giangnt.kidtube.channel
 
+import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.giangnt.kidtube.R
 import com.giangnt.kidtube.base.fragment.LoadDataFragment
+import com.giangnt.kidtube.databinding.FragmentChannelListBinding
+import com.giangnt.kidtube.model.ChannelItem
+import com.giangnt.kidtube.nav.ChannelNav
+import com.giangnt.kidtube.repo.Repo
+import com.giangnt.kidtube.support.EndlessRecyclerViewScrollListener
 
-class ChannelListFragment : LoadDataFragment() {
+class ChannelListFragment : LoadDataFragment(), ChannelClickCallback {
+
+
+    lateinit var binding: FragmentChannelListBinding
+    lateinit var channelAdapter: ChannelAdapter
+    lateinit var endlessScroll: EndlessRecyclerViewScrollListener
+    lateinit var model: ChannelListViewModel
+
+    var nav: ChannelNav? = null
+
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is ChannelNav) {
+            nav = context
+        }
+    }
+
+    override fun onAttach(activity: Activity?) {
+        super.onAttach(activity)
+        if (activity is ChannelNav) {
+            nav = activity
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_channel_list, container, false)
+
+        channelAdapter = ChannelAdapter(this)
+        binding.rcChannel.adapter = channelAdapter
+        val mDividerItemDecoration = DividerItemDecoration(binding.rcChannel.context,
+                DividerItemDecoration.VERTICAL)
+        binding.rcChannel.addItemDecoration(mDividerItemDecoration)
+
+        endlessScroll = object : EndlessRecyclerViewScrollListener(binding.rcChannel.layoutManager as LinearLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                model.getMoreChannel()
+            }
+        }
+        binding.rcChannel.clearOnScrollListeners()
+        binding.rcChannel.addOnScrollListener(endlessScroll)
+
+        return binding.root
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        val factory = ChannelListViewModel.Factory(
+                activity!!.application, Repo())
+
+        model = ViewModelProviders.of(this, factory)
+                .get(ChannelListViewModel::class.java)
+
+        subscribeUi(model)
+    }
+
+    private fun subscribeUi(viewModel: ChannelListViewModel) {
+
+        viewModel.getObservableChannels().observe(this, Observer<ArrayList<ChannelItem>> { items ->
+            items.let { channelAdapter.setList(items!!) }
+            binding.executePendingBindings()
+        })
+    }
+
+    override fun onClick(channelItem: ChannelItem) {
+        nav?.onGoChannelDetail(channelItem.channel)
+    }
+
     companion object {
         public fun newInstance(): ChannelListFragment {
             val args = Bundle()

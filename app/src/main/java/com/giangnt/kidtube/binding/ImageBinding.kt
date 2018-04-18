@@ -25,6 +25,9 @@ fun ImageView.setImageUrl(url: String?) {
         R.id.imgChannel -> {
             Glide.with(context).load(url).into(this)
         }
+        else -> {
+            Glide.with(context).load(url).into(this)
+        }
     }
 
 }

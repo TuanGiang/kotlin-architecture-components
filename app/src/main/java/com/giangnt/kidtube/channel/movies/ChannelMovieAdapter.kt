@@ -1,11 +1,11 @@
-package com.giangnt.kidtube.home
+package com.giangnt.kidtube.channel.movies
 
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
-import com.giangnt.kidtube.databinding.ItemMovieBinding
+import com.giangnt.kidtube.databinding.ItemChannelMovieBinding
 import com.giangnt.kidtube.model.MovieItem
 
 /**
@@ -13,11 +13,11 @@ import com.giangnt.kidtube.model.MovieItem
  * <p>
  * <p>
  * Copyright 2011 - 2016 ARIS-VN, Inc. All rights reserved.
- * Created by: giang.nt on 1:14 PM - 4/17/2018
+ * Created by: giang.nt on 4:09 PM - 4/18/2018
  * Email: giang.nt@aris-vn.com
- * Location: com.giangnt.kidtube.base - MovieAdapter
+ * Location: com.giangnt.kidtube.channel.movies - ChannelMovieAdapter
  */
-class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
+class ChannelMovieAdapter(val callback: ChannelMovieCallback) : RecyclerView.Adapter<ChannelMovieAdapter.MovieHolder>() {
 
     var items = ArrayList<MovieItem>()
 
@@ -40,11 +40,12 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
-        val binding: ItemMovieBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_movie,
+        val binding: ItemChannelMovieBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_channel_movie,
                 parent, false)
+        binding.callback = callback
         return MovieHolder(binding)
     }
 
-    public class MovieHolder(val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root)
+    public class MovieHolder(val binding: ItemChannelMovieBinding) : RecyclerView.ViewHolder(binding.root)
 
 }

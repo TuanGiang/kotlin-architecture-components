@@ -1,4 +1,4 @@
-package com.giangnt.kidtube.home
+package com.giangnt.kidtube.channel.home
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -14,21 +14,31 @@ import android.view.View
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
 import com.giangnt.kidtube.base.fragment.LoadDataFragment
-import com.giangnt.kidtube.databinding.FragmentHomeBinding
+import com.giangnt.kidtube.databinding.FragmentChannelHomeBinding
+import com.giangnt.kidtube.home.HomeAdapter
+import com.giangnt.kidtube.home.HomeClickCallback
 import com.giangnt.kidtube.model.Channel
 import com.giangnt.kidtube.model.MovieItem
-import com.giangnt.kidtube.model.User
 import com.giangnt.kidtube.nav.MovieNav
 import com.giangnt.kidtube.repo.Repo
 import com.giangnt.kidtube.support.EndlessRecyclerViewScrollListener
 
+/**
+ * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+ * <p>
+ * <p>
+ * Copyright 2011 - 2016 ARIS-VN, Inc. All rights reserved.
+ * Created by: giang.nt on 2:17 PM - 4/18/2018
+ * Email: giang.nt@aris-vn.com
+ * Location: com.giangnt.kidtube.channel - ChannelHomeFragment
+ */
+class ChannelHomeFragment : LoadDataFragment(), HomeClickCallback {
 
-class HomeFragment : LoadDataFragment(), HomeClickCallback {
-
-    lateinit var binding: FragmentHomeBinding
+    lateinit var channel: Channel
+    lateinit var model: ChannelHomeViewModel
+    lateinit var binding: FragmentChannelHomeBinding
     lateinit var homeAdapter: HomeAdapter
     lateinit var endlessScroll: EndlessRecyclerViewScrollListener
-    lateinit var model: HomeViewModel
 
     var nav: MovieNav? = null
 
@@ -46,8 +56,13 @@ class HomeFragment : LoadDataFragment(), HomeClickCallback {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        channel = arguments!!.get(CHANNEL) as Channel
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_channel_home, container, false)
 
         homeAdapter = HomeAdapter(this)
         binding.rcMovie.adapter = homeAdapter
@@ -57,7 +72,7 @@ class HomeFragment : LoadDataFragment(), HomeClickCallback {
 
         endlessScroll = object : EndlessRecyclerViewScrollListener(binding.rcMovie.layoutManager as LinearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                model.getMoreHome()
+                model.getMore()
             }
         }
         binding.rcMovie.clearOnScrollListeners()
@@ -66,25 +81,21 @@ class HomeFragment : LoadDataFragment(), HomeClickCallback {
         return binding.root
     }
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val factory = HomeViewModel.Factory(
+        val factory = ChannelHomeViewModel.Factory(
                 activity!!.application, Repo())
 
         model = ViewModelProviders.of(this, factory)
-                .get(HomeViewModel::class.java)
+                .get(ChannelHomeViewModel::class.java)
 
-        binding.homeViewModel = model
+        binding.channel = channel
         subscribeUi(model)
     }
 
-    private fun subscribeUi(viewModel: HomeViewModel) {
-        viewModel.getObservableUser().observe(this, Observer<User> { user -> viewModel.setUser(user) })
-
-
-        viewModel.getObservableMovies().observe(this, Observer<ArrayList<MovieItem>> { items ->
+    private fun subscribeUi(model: ChannelHomeViewModel) {
+        model.getObservableMovies().observe(this, Observer<ArrayList<MovieItem>> { items ->
             items.let { homeAdapter.setList(items!!) }
             binding.executePendingBindings()
         })
@@ -98,10 +109,13 @@ class HomeFragment : LoadDataFragment(), HomeClickCallback {
         nav?.onGoChannelDetail(channel)
     }
 
+
     companion object {
-        public fun newInstance(): HomeFragment {
+        val CHANNEL = "CHANNEL"
+        fun newInstance(channel: Channel): ChannelHomeFragment {
             val args = Bundle()
-            val fragment = HomeFragment()
+            args.putSerializable(CHANNEL, channel)
+            val fragment = ChannelHomeFragment()
             fragment.arguments = args
             return fragment
         }
