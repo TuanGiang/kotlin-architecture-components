@@ -21,9 +21,9 @@ import kotlinx.android.synthetic.main.fragment_login.*
  * Copyright 2011 - 2016 ARIS-VN, Inc. All rights reserved.
  * Created by: giang.nt on 10:32 AM - 4/16/2018
  * Email: giang.nt@aris-vn.com
- * Location: com.giangnt.kidtube.account - AccountFragment
+ * Location: com.giangnt.kidtube.account - PersonalFragment
  */
-class AccountFragment : LoadDataFragment() {
+class PersonalFragment : LoadDataFragment() {
 
     lateinit var binding: FragmentLoginBinding
 
@@ -39,12 +39,12 @@ class AccountFragment : LoadDataFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val viewModel = ViewModelProviders.of(this).get(AccountViewModel::class.java)
-        binding.accountViewModel = viewModel
+        val viewModel = ViewModelProviders.of(this).get(PersonalViewModel::class.java)
+        binding.personalViewModel = viewModel
         subscribeUi(viewModel)
     }
 
-    private fun subscribeUi(viewModel: AccountViewModel) {
+    private fun subscribeUi(viewModel: PersonalViewModel) {
         viewModel.getObservableUser().observe(this, Observer<User> { user -> viewModel.setUser(user) })
     }
 
@@ -61,9 +61,9 @@ class AccountFragment : LoadDataFragment() {
     }
 
     companion object {
-        public fun newInstance(): AccountFragment {
+        public fun newInstance(): PersonalFragment {
             val args = Bundle()
-            val fragment = AccountFragment()
+            val fragment = PersonalFragment()
             fragment.arguments = args
             return fragment
         }

@@ -1,6 +1,7 @@
 package com.giangnt.kidtube.binding
 
 import android.databinding.BindingAdapter
+import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.giangnt.kidtube.R
@@ -31,4 +32,15 @@ fun ImageView.setImageUrl(url: String?) {
     }
 
 }
+
+@BindingAdapter("visibleGone")
+fun View.setGone(isGone: Boolean) {
+    if (isGone) {
+        this.visibility = View.GONE
+    } else {
+        this.visibility = View.VISIBLE
+    }
+
+}
+
 

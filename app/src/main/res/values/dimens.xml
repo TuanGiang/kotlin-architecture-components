@@ -4,6 +4,8 @@
     <dimen name="icon_channel_height">60dp</dimen>
     <dimen name="movie_suggest_width">180dp</dimen>
     <dimen name="channel_thumbnail_width">120dp</dimen>
+    <dimen name="channel_search_thumbnail_width">80dp</dimen>
     <dimen name="channel_cover_height">100dp</dimen>
     <dimen name="playlist_thumbnail_width">180dp</dimen>
+    <dimen name="search_result_height">200dp</dimen>
 </resources>

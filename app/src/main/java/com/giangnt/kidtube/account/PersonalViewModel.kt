@@ -10,6 +10,6 @@ import com.giangnt.kidtube.base.viewmodel.LoginViewModel
  * Copyright 2011 - 2016 ARIS-VN, Inc. All rights reserved.
  * Created by: giang.nt on 10:27 AM - 4/17/2018
  * Email: giang.nt@aris-vn.com
- * Location: com.giangnt.kidtube.account - AccountViewModel
+ * Location: com.giangnt.kidtube.account - PersonalViewModel
  */
-class AccountViewModel(application: Application) : LoginViewModel(application)
+class PersonalViewModel(application: Application) : LoginViewModel(application)

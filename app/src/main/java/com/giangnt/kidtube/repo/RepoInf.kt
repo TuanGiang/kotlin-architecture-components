@@ -1,6 +1,11 @@
 package com.giangnt.kidtube.repo
 
+import android.content.Context
+import com.giangnt.kidtube.entity.AppDatabase
 import com.giangnt.kidtube.model.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.async
 
 /**
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -12,6 +17,19 @@ import com.giangnt.kidtube.model.*
  * Location: com.giangnt.kidtube.repo - RepoInf
  */
 public class Repo {
+
+    fun saveChannels(context: Context, channels: ArrayList<Channel>): Deferred<Any> {
+        return async(CommonPool) {
+            AppDatabase.getInstance(context).channelDao().insertAll(channels)
+        }
+    }
+
+    fun getChannels(context: Context): Deferred<List<Channel>> {
+        return async(CommonPool) {
+            AppDatabase.getInstance(context).channelDao().getAll()
+        }
+    }
+
 
     fun getHome(pageIndex: Int, pageSize: Int = 12): ArrayList<MovieItem> {
         return Repo.getHome(pageIndex, pageSize)

@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="accountViewModel"
-            type="com.giangnt.kidtube.account.AccountViewModel" />
+            name="personalViewModel"
+            type="com.giangnt.kidtube.account.PersonalViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -83,7 +83,7 @@
             <include
                 android:id="@+id/accountGroup"
                 layout="@layout/item_account"
-                app:user="@{accountViewModel.user}" />
+                app:user="@{personalViewModel.user}" />
         </FrameLayout>
 
 

@@ -3,13 +3,9 @@ package com.giangnt.kidtube
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import com.giangnt.kidtube.account.AccountFragment
+import com.giangnt.kidtube.account.PersonalFragment
 import com.giangnt.kidtube.channel.ChannelListFragment
 import com.giangnt.kidtube.channel.detail.ChannelFragment
-import com.giangnt.kidtube.channel.home.ChannelHomeFragment
-import com.giangnt.kidtube.channel.movies.ChannelVideoFragment
-import com.giangnt.kidtube.channel.movies.ChannelVideoViewModel
-import com.giangnt.kidtube.channel.playlist.ChannelPlaylistFragment
 import com.giangnt.kidtube.home.HomeFragment
 import com.giangnt.kidtube.model.Channel
 import com.giangnt.kidtube.model.MovieItem
@@ -88,7 +84,7 @@ class MainActivity : AppCompatActivity(), FragNavController.TransactionListener,
             TAB_HOME -> HomeFragment.newInstance()
             TAB_OWNER -> MyVideoFragment.newInstance()
             TAB_CHANNEL -> ChannelListFragment.newInstance()
-            TAB_ACCOUNT -> AccountFragment.newInstance()
+            TAB_ACCOUNT -> PersonalFragment.newInstance()
             else -> throw Exception("Invalid tab")
         }
 

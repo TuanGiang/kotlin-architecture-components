@@ -10,4 +10,11 @@
     <string name="action_add_my_video">Add to</string>
     <string name="label_up_next">Up next</string>
     <string name="action_auto_play">Auto play</string>
+    <string name="label_recent">Recents</string>
+    <string name="label_channel">My Channels</string>
+    <string name="action_history">History</string>
+    <string name="action_add_channel">Add Channel</string>
+    <string name="label_channel_selected">Channel Selected</string>
+    <string name="action_save">Save</string>
+    <string name="action_search">Search</string>
 </resources>
