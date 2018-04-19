@@ -1,4 +1,4 @@
-package com.giangnt.kidtube.net
+package com.giangnt.kidtube.net.search
 
 import com.google.gson.annotations.SerializedName
 

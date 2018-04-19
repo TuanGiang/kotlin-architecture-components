@@ -7,6 +7,7 @@ import android.content.Context
 import com.giangnt.kidtube.dao.ChannelDAO
 import com.giangnt.kidtube.dao.PlaylistDAO
 import com.giangnt.kidtube.model.Channel
+import com.giangnt.kidtube.model.Playlist
 
 /**
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -17,7 +18,7 @@ import com.giangnt.kidtube.model.Channel
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.entity - AppDatabase
  */
-@Database(entities = arrayOf(Channel::class), version = 1)
+@Database(entities = arrayOf(Channel::class, Playlist::class), version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun channelDao(): ChannelDAO
 
@@ -25,7 +26,8 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         val DB_NAME = "MYDB.db"
-        @Volatile private var INSTANCE: AppDatabase? = null
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
 
         fun getInstance(context: Context): AppDatabase =
                 INSTANCE ?: synchronized(this) {

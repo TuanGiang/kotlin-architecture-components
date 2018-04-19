@@ -3,6 +3,7 @@ package com.giangnt.kidtube.search
 import android.app.Application
 import android.arch.lifecycle.*
 import android.databinding.ObservableField
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
 import com.giangnt.kidtube.entity.AppDatabase
@@ -80,16 +81,24 @@ class SearchChannelViewModel(application: Application, val repo: Repo) : Android
         }
     }
 
+    fun getPlaylist(channelId: String, pageToken: String?) {
+        val response = Youtube.getYoutubeService().getPlaylist(channelId = channelId, pageToken = pageToken).execute()
+        if (response.isSuccessful && response.body() != null) {
+            val responseData = response.body()
+            if (TextUtils.isEmpty(responseData!!.nextPageToken)) {
+                getPlaylist(channelId, responseData!!.nextPageToken)
+            }
+            responseData!!.items.forEach { Log.i("TITLE : " , it.snippet.title) }
+        }
+
+    }
 
 
     fun save() {
         launch {
             channelSelected.value.let {
-                repo.saveChannels(getApplication(), it!!).await()
+                it!!.forEach { getPlaylist(it.id, null) }
             }
-
-            repo.getChannels(getApplication()).await()
-
         }
 
     }

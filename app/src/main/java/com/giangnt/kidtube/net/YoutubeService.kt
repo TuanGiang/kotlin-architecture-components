@@ -1,7 +1,10 @@
 package com.giangnt.kidtube.net
 
 import com.giangnt.kidtube.BuildConfig
+import com.giangnt.kidtube.net.playlist.PlaylistResponse
+import com.giangnt.kidtube.net.search.SearchResponse
 import io.reactivex.Single
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -16,8 +19,12 @@ import retrofit2.http.Query
  */
 interface YoutubeService {
     @GET("youtube/v3/search/")
-    fun search(@Query("part") part: String = "id,snippet", @Query("maxResults") maxResults: Int = 20,
+    fun search(@Query("part") part: String = "id,snippet", @Query("maxResults") maxResults: Int = 50,
                @Query("q") query: String, @Query("key") key: String = BuildConfig.API_KEY): Single<SearchResponse>
+
+    @GET("youtube/v3/playlists")
+    fun getPlaylist(@Query("part") part: String = "contentDetails,snippet", @Query("maxResults") maxResults: Int = 50,
+                    @Query("channelId") channelId: String, @Query("pageToken") pageToken: String? = null, @Query("key") key: String = BuildConfig.API_KEY): Call<PlaylistResponse>
 
 
 }
