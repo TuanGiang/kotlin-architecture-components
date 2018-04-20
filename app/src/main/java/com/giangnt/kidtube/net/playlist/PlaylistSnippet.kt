@@ -17,6 +17,9 @@ data class PlaylistSnippet(
         val description: String,
 
         @SerializedName("channelTitle")
-        val channelTitle: String
+        val channelTitle: String,
+
+        @SerializedName("thumbnails")
+        val thumbnail: PlaylistThumbnail
 
 )

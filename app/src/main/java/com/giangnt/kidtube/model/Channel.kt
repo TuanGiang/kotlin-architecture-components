@@ -8,36 +8,37 @@ import java.io.Serializable
 
 @Entity(tableName = "Channel")
 data class Channel(
-        @PrimaryKey
-        @ColumnInfo(name = "id")
-        @SerializedName("id")
-        val id: String,
 
-        @ColumnInfo(name = "publicAt")
+        @PrimaryKey
+        @ColumnInfo(name = "channelId")
+        @SerializedName("channelId")
+        val channelId: String,
+
+        @ColumnInfo(name = "channelPublicAt")
         @SerializedName("publicAt")
         val publicAt: String,
 
-        @ColumnInfo(name = "thumbnail")
+        @ColumnInfo(name = "channelThumbnail")
         @SerializedName("thumbnail")
         val thumbnail: String,
 
-        @ColumnInfo(name = "title")
+        @ColumnInfo(name = "channelTitle")
         @SerializedName("title")
         val title: String,
 
-        @ColumnInfo(name = "description")
+        @ColumnInfo(name = "channelDescription")
         @SerializedName("description")
         val description: String,
 
-        @ColumnInfo(name = "source")
+        @ColumnInfo(name = "channelSource")
         @SerializedName("source")
         val source: String,
 
-        @ColumnInfo(name = "createdAt")
+        @ColumnInfo(name = "channelCreatedAt")
         @SerializedName("createdAt")
         val createdAt: String,
 
-        @ColumnInfo(name = "updatedAt")
+        @ColumnInfo(name = "channelUpdatedAt")
         @SerializedName("updatedAt")
         val updatedAt: String
 

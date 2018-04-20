@@ -1,5 +1,7 @@
 package com.giangnt.kidtube.search
 
+import android.app.Activity
+import android.app.ProgressDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -31,6 +33,7 @@ public class SearchChannelActivity : AppCompatActivity(), ChannelSearchClickCall
     lateinit var searchChannelAdapter: SearchChannelAdapter
     lateinit var selectedChannelAdapter: SelectedChannelAdapter
 
+    lateinit var syncDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +60,16 @@ public class SearchChannelActivity : AppCompatActivity(), ChannelSearchClickCall
         binding.btnSearch.setOnClickListener { search(edtSearch.text.toString()) }
 
         binding.btnSave.setOnClickListener { save() }
+
+        syncDialog = ProgressDialog(this)
+        syncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+        syncDialog.setCancelable(false)
+        syncDialog.setCanceledOnTouchOutside(false)
+        syncDialog.setMessage("Downloading, Please wait a few minutes!")
     }
 
     private fun save() {
+        syncDialog.show()
         model.save()
     }
 
@@ -71,7 +81,23 @@ public class SearchChannelActivity : AppCompatActivity(), ChannelSearchClickCall
         model.getObservableSelected().observe(this, Observer<ArrayList<Channel>> { items ->
             selectedChannelAdapter.setList(items)
         })
+        model.getObservableDownloadDone().observe(this, Observer<Boolean> { isDone -> if (isDone != null && isDone) downloadDone() })
 
+    }
+
+    fun downloadDone() {
+        if (syncDialog.isShowing) {
+            syncDialog.cancel()
+        }
+        setResult(Activity.RESULT_OK)
+        finish()
+    }
+
+    override fun onDestroy() {
+        if (syncDialog.isShowing) {
+            syncDialog.cancel()
+        }
+        super.onDestroy()
     }
 
     fun search(query: String) {
@@ -86,7 +112,7 @@ public class SearchChannelActivity : AppCompatActivity(), ChannelSearchClickCall
     }
 
     override fun onRemove(channel: Channel) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //
     }
 
     companion object {

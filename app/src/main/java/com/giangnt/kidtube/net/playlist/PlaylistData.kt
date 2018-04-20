@@ -1,5 +1,6 @@
 package com.giangnt.kidtube.net.playlist
 
+import com.giangnt.kidtube.model.Playlist
 import com.google.gson.annotations.SerializedName
 
 data class PlaylistData(
@@ -15,4 +16,10 @@ data class PlaylistData(
         @SerializedName("contentDetails")
         val contentDetails: PlaylistContentDetails
 
-)
+) {
+    fun toPlayList(): Playlist {
+        return Playlist(id, snippet.publishedAt, snippet.thumbnail.medium.url,
+                snippet.title, kind, "", "", "", contentDetails.itemCount,
+                snippet.channelId, snippet.channelTitle)
+    }
+}

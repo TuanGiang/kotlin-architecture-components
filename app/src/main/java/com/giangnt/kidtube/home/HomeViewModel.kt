@@ -8,6 +8,7 @@ import android.arch.lifecycle.ViewModelProvider
 import com.giangnt.kidtube.base.viewmodel.LoginViewModel
 import com.giangnt.kidtube.model.MovieItem
 import com.giangnt.kidtube.repo.Repo
+import kotlinx.coroutines.experimental.launch
 
 /**
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -24,8 +25,18 @@ class HomeViewModel(application: Application, var repo: Repo) : LoginViewModel(a
 
     var pageIndex = 0
 
+//    init {
+//        movieLiveData.postValue(repo.getHome(pageIndex))
+//    }
     init {
-        movieLiveData.postValue(repo.getHome(pageIndex))
+        getHome()
+    }
+
+    fun getHome() {
+        launch {
+            val firstData = repo.getHomeData(getApplication(), 0).await()
+            movieLiveData.postValue(firstData as ArrayList<MovieItem>?)
+        }
     }
 
     fun getObservableMovies(): LiveData<ArrayList<MovieItem>> {

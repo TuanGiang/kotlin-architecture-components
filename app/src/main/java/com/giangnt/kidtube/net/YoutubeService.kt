@@ -1,7 +1,9 @@
 package com.giangnt.kidtube.net
 
 import com.giangnt.kidtube.BuildConfig
+import com.giangnt.kidtube.net.movie.MovieResponse
 import com.giangnt.kidtube.net.playlist.PlaylistResponse
+import com.giangnt.kidtube.net.playlist.item.PlaylistItemResponse
 import com.giangnt.kidtube.net.search.SearchResponse
 import io.reactivex.Single
 import retrofit2.Call
@@ -26,5 +28,11 @@ interface YoutubeService {
     fun getPlaylist(@Query("part") part: String = "contentDetails,snippet", @Query("maxResults") maxResults: Int = 50,
                     @Query("channelId") channelId: String, @Query("pageToken") pageToken: String? = null, @Query("key") key: String = BuildConfig.API_KEY): Call<PlaylistResponse>
 
+    @GET("youtube/v3/playlistItems")
+    fun getPlaylistItems(@Query("part") part: String = "contentDetails,snippet", @Query("maxResults") maxResults: Int = 50,
+                         @Query("playlistId") playlistId: String, @Query("pageToken") pageToken: String? = null, @Query("key") key: String = BuildConfig.API_KEY): Call<PlaylistItemResponse>
 
+    @GET("youtube/v3/videos")
+    fun getMovies(@Query("part") part: String = "snippet,contentDetails,statistics",
+                  @Query("id") ids: String, @Query("key") key: String = BuildConfig.API_KEY): Call<MovieResponse>
 }

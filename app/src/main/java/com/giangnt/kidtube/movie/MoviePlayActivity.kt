@@ -39,7 +39,7 @@ class MoviePlayActivity : AppCompatActivity() {
         binding.rcMovie.adapter = adapter
 
         val factory = MoviePlayViewModel.Factory(
-                application, Repo(), movie.video.id)
+                application, Repo(), movie.video.videoId)
         model = ViewModelProviders.of(this, factory)
                 .get(MoviePlayViewModel::class.java)
         model.setMovie(movie)

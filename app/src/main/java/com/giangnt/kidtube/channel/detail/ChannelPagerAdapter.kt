@@ -25,8 +25,8 @@ class ChannelPagerAdapter(supportFragmentManager: FragmentManager, val channel: 
 
     init {
         home = ChannelHomeFragment.newInstance(channel)
-        video = ChannelVideoFragment.newInstance(channel.id)
-        playlist = ChannelPlaylistFragment.newInstance(channel.id)
+        video = ChannelVideoFragment.newInstance(channel.channelId)
+        playlist = ChannelPlaylistFragment.newInstance(channel.channelId)
     }
 
     override fun getItem(position: Int): Fragment {

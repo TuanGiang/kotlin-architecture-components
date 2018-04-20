@@ -16,7 +16,7 @@ data class SearchId(
         val kind: String,
         @SerializedName("channelId")
         val channelId: String,
-        @SerializedName("videoId")
+        @SerializedName("id")
         val videoId: String,
         @SerializedName("playlistId")
         val playlistId: String

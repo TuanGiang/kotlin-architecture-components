@@ -4,12 +4,13 @@ import android.app.Application
 import android.arch.lifecycle.*
 import android.databinding.ObservableField
 import android.text.TextUtils
-import android.util.Log
 import android.widget.Toast
-import com.giangnt.kidtube.entity.AppDatabase
 import com.giangnt.kidtube.model.Channel
+import com.giangnt.kidtube.model.Playlist
 import com.giangnt.kidtube.net.Youtube
+import com.giangnt.kidtube.net.playlist.item.PlaylistItem
 import com.giangnt.kidtube.repo.Repo
+import com.giangnt.kidtube.toMovie
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.launch
@@ -29,6 +30,8 @@ class SearchChannelViewModel(application: Application, val repo: Repo) : Android
 
     val searchResult = MutableLiveData<ArrayList<Channel>>()
 
+    val downloadDone = MutableLiveData<Boolean>()
+
     val channelSelected = MutableLiveData<ArrayList<Channel>>()
 
     init {
@@ -37,6 +40,10 @@ class SearchChannelViewModel(application: Application, val repo: Repo) : Android
 
     fun getObservableResult(): LiveData<ArrayList<Channel>> {
         return searchResult
+    }
+
+    fun getObservableDownloadDone(): LiveData<Boolean> {
+        return downloadDone
     }
 
 
@@ -81,26 +88,89 @@ class SearchChannelViewModel(application: Application, val repo: Repo) : Android
         }
     }
 
-    fun getPlaylist(channelId: String, pageToken: String?) {
-        val response = Youtube.getYoutubeService().getPlaylist(channelId = channelId, pageToken = pageToken).execute()
-        if (response.isSuccessful && response.body() != null) {
-            val responseData = response.body()
-            if (TextUtils.isEmpty(responseData!!.nextPageToken)) {
-                getPlaylist(channelId, responseData!!.nextPageToken)
-            }
-            responseData!!.items.forEach { Log.i("TITLE : " , it.snippet.title) }
+    fun saveChannel() {
+        launch {
+            repo.saveChannels(getApplication(), channelSelected.value!!).await()
+            val channels = repo.getChannels(getApplication()).await()
+            fetchPlaylist(channels)
         }
-
     }
 
+    private fun onDone() {
+        downloadDone.postValue(true)
+    }
+
+    private fun fetchPlaylist(channels: List<Channel>) {
+        launch {
+            channels.forEach {
+                var existLoadMore = true
+                var pageToken: String? = null
+                while (existLoadMore) {
+                    val playlistData = repo.fetchPlayLists(it.channelId, pageToken).await()
+                    if (playlistData != null) {
+                        val playlists = ArrayList<Playlist>()
+                        playlistData.items.forEach {
+                            playlists.add(it.toPlayList())
+                        }
+                        repo.savePlayLists(getApplication(), playlists)
+                        if (!TextUtils.isEmpty(playlistData.nextPageToken)) {
+                            pageToken = playlistData.nextPageToken
+                        } else {
+                            existLoadMore = false
+                        }
+                    }
+                }
+            }
+            val playlists = repo.getPlayLists(context = getApplication()).await()
+            fetchPlaylistItem(playlists)
+        }
+    }
+
+    private fun fetchPlaylistItem(playlists: List<Playlist>) {
+        launch {
+            playlists.forEach {
+                var existLoadMore = true
+                var pageToken: String? = null
+                while (existLoadMore) {
+                    val itemData = repo.fetchPlayListItems(it.id, pageToken).await()
+                    if (itemData != null) {
+                        val items = ArrayList<PlaylistItem>()
+                        itemData.items
+                                .filter { it.snippet.resourceId.kind == "youtube#video" }
+                                .forEach {
+                                    items.add(it.toItem())
+                                }
+
+                        val itemIds = ArrayList<String>()
+                        items.forEach { itemIds.add(it.videoId) }
+                        val movieItems = repo.fetchMovies(itemIds.joinToString()).await()
+                        if (movieItems != null) {
+                            val movies = movieItems.items.map { Pair(it, getItemById(items, it.id)) }.map { it.toMovie() }
+                            repo.saveMovies(getApplication(), movies)
+                        }
+
+                        if (!TextUtils.isEmpty(itemData.nextPageToken)) {
+                            pageToken = itemData.nextPageToken
+                        } else {
+                            existLoadMore = false
+                        }
+                    }
+                }
+            }
+            onDone()
+        }
+    }
+
+    fun getItemById(list: List<PlaylistItem>, id: String): PlaylistItem {
+        val item = list.find { it.videoId == id }
+        if (item != null) {
+            return item
+        }
+        return PlaylistItem("", 0, "")
+    }
 
     fun save() {
-        launch {
-            channelSelected.value.let {
-                it!!.forEach { getPlaylist(it.id, null) }
-            }
-        }
-
+        saveChannel()
     }
 
 

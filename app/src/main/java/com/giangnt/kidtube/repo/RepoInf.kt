@@ -3,6 +3,10 @@ package com.giangnt.kidtube.repo
 import android.content.Context
 import com.giangnt.kidtube.entity.AppDatabase
 import com.giangnt.kidtube.model.*
+import com.giangnt.kidtube.net.Youtube
+import com.giangnt.kidtube.net.movie.MovieResponse
+import com.giangnt.kidtube.net.playlist.PlaylistResponse
+import com.giangnt.kidtube.net.playlist.item.PlaylistItemResponse
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
@@ -24,15 +28,64 @@ public class Repo {
         }
     }
 
+    fun savePlayLists(context: Context, playlists: ArrayList<Playlist>): Deferred<Any> {
+        return async(CommonPool) {
+            AppDatabase.getInstance(context).playlistDao().insertAll(playlists)
+        }
+    }
+
+    fun saveMovies(context: Context, movies: List<Movie>): Deferred<Any> {
+        return async(CommonPool) {
+            AppDatabase.getInstance(context).movieDao().insertAll(movies)
+        }
+    }
+
+
     fun getChannels(context: Context): Deferred<List<Channel>> {
         return async(CommonPool) {
             AppDatabase.getInstance(context).channelDao().getAll()
         }
     }
 
+    fun getPlayLists(context: Context): Deferred<List<Playlist>> {
+        return async(CommonPool) {
+            AppDatabase.getInstance(context).playlistDao().getAll()
+        }
+    }
+
+    fun getMovies(context: Context): Deferred<List<Movie>> {
+        return async(CommonPool) {
+            AppDatabase.getInstance(context).movieDao().getAll()
+        }
+    }
+
+
+    fun fetchPlayLists(channelId: String, pageToken: String?): Deferred<PlaylistResponse?> {
+        return async(CommonPool) {
+            Youtube.getYoutubeService().getPlaylist(channelId = channelId, pageToken = pageToken).execute().body()
+        }
+    }
+
+    fun fetchPlayListItems(playlistId: String, pageToken: String?): Deferred<PlaylistItemResponse?> {
+        return async(CommonPool) {
+            Youtube.getYoutubeService().getPlaylistItems(playlistId = playlistId, pageToken = pageToken).execute().body()
+        }
+    }
+
+    fun fetchMovies(ids: String): Deferred<MovieResponse?> {
+        return async(CommonPool) {
+            Youtube.getYoutubeService().getMovies(ids = ids).execute().body()
+        }
+    }
+
+    fun getHomeData(context: Context, pageIndex: Int, pageSize: Int = 12): Deferred<List<MovieItem>> {
+        return async(CommonPool) {
+            AppDatabase.getInstance(context).movieDao().getAllWithChannel()
+        }
+    }
 
     fun getHome(pageIndex: Int, pageSize: Int = 12): ArrayList<MovieItem> {
-        return Repo.getHome(pageIndex, pageSize)
+       return Repo.getHome(pageIndex)
     }
 
     fun getChannelList(pageIndex: Int, pageSize: Int = 12): ArrayList<ChannelItem> {
@@ -50,33 +103,11 @@ public class Repo {
     companion object {
         public fun getHome(pageIndex: Int, pageSize: Int = 12): ArrayList<MovieItem> {
             val movies = ArrayList<MovieItem>()
-            for (i in 0..pageSize) {
-                val id = "Index: " + pageIndex.toString() + " Position: " + i.toString()
-                val movieDetail = Movie(id, "", "https://www.w3schools.com/howto/img_fjords.jpg", "Movie Title : " + id, "Description : " + id, "", ""
-                        , "", "", " Channel ID : " + id, " Channel Title : " + id, id, "Duration: " + id, "" +
-                        "", "", pageIndex * pageSize + i, pageIndex * pageSize, pageIndex)
-                val channelDetail = Channel(id, "", "https://www.jqueryscript.net/images/Simplest-Responsive-jQuery-Image-Lightbox-Plugin-simple-lightbox.jpg", "Channel Title : " + id, "Description : " + id, "", ""
-                        , "")
-
-                val movieItem = MovieItem(movieDetail, channelDetail)
-                movies.add(movieItem)
-            }
             return movies
         }
 
         public fun getRelated(videoId: String): ArrayList<MovieItem> {
             val movies = ArrayList<MovieItem>()
-            for (i in 0..10) {
-                val id = "Index: " + i.toString()
-                val movieDetail = Movie(id, "", "https://www.w3schools.com/howto/img_fjords.jpg", "Movie Title : " + id, "Description : " + id, "", ""
-                        , "", "", " Channel ID : " + id, " Channel Title : " + id, id, "Duration: " + id, "" +
-                        "", "", 12 + i, 12, 12)
-                val channelDetail = Channel(id, "", "https://www.jqueryscript.net/images/Simplest-Responsive-jQuery-Image-Lightbox-Plugin-simple-lightbox.jpg", "Channel Title : " + id, "Description : " + id, "", ""
-                        , "")
-
-                val movieItem = MovieItem(movieDetail, channelDetail)
-                movies.add(movieItem)
-            }
             return movies
         }
 
