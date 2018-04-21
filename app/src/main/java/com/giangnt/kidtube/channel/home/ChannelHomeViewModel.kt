@@ -1,13 +1,18 @@
 package com.giangnt.kidtube.channel.home
 
 import android.app.Application
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
 import android.databinding.ObservableField
 import com.giangnt.kidtube.base.viewmodel.LoginViewModel
+import com.giangnt.kidtube.entity.AppDatabase
 import com.giangnt.kidtube.model.ChannelItem
 import com.giangnt.kidtube.model.MovieItem
+import com.giangnt.kidtube.paging.PagingConstants
 import com.giangnt.kidtube.repo.Repo
 
 /**
@@ -19,36 +24,23 @@ import com.giangnt.kidtube.repo.Repo
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.channel.home - ChannelHomeViewModel
  */
-class ChannelHomeViewModel(application: Application, val repo: Repo) : LoginViewModel(application) {
-    val channel = ObservableField<ChannelItem>()
-    val movies = MutableLiveData<ArrayList<MovieItem>>()
-    var pageIndex = 0
+class ChannelHomeViewModel(application: Application, val repo: Repo, val channelId : String) : LoginViewModel(application) {
+    private val movieDao = AppDatabase.getInstance(application).movieDao()
 
-    init {
-        val firstData = repo.getHome(0)
-        movies.postValue(firstData)
+    private val allMovieItem = LivePagedListBuilder(movieDao.getMovieChannelHome(channelId), PagedList.Config.Builder()
+            .setPageSize(PagingConstants.PAGE_SIZE)
+            .setEnablePlaceholders(PagingConstants.ENABLE_PLACEHOLDERS)
+            .build()).build()
+
+
+    fun getObservableMovies(): LiveData<PagedList<MovieItem>> {
+        return allMovieItem
     }
 
 
-    public fun getObservableMovies(): MutableLiveData<ArrayList<MovieItem>> {
-        return movies
-    }
-
-    public fun setChannel(channelItem: ChannelItem?) {
-        this.channel.set(channelItem)
-    }
-
-    fun getMore() {
-        pageIndex++
-        val items = repo.getHome(pageIndex)
-        val currentItems = movies.value
-        currentItems!!.addAll(items)
-        movies.postValue(currentItems)
-    }
-
-    class Factory(val application: Application, val repo: Repo) : ViewModelProvider.NewInstanceFactory() {
+    class Factory(val application: Application, val repo: Repo, val channelId: String) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ChannelHomeViewModel(application, repo) as T
+            return ChannelHomeViewModel(application, repo , channelId) as T
         }
     }
 }

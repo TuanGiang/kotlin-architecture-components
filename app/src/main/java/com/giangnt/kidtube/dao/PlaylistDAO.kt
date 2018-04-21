@@ -1,9 +1,11 @@
 package com.giangnt.kidtube.dao
 
+import android.arch.paging.DataSource
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
+import com.giangnt.kidtube.model.MovieItem
 import com.giangnt.kidtube.model.Playlist
 
 /**
@@ -23,4 +25,7 @@ interface PlaylistDAO {
 
     @Query("SELECT * FROM Playlist")
     fun getAll(): List<Playlist>
+
+    @Query("SELECT * FROM Playlist where channelId == :channelId ")
+    fun getPlaylistByChannel(channelId: String) : DataSource.Factory<Int, Playlist>
 }

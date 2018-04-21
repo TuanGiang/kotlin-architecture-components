@@ -1,5 +1,6 @@
 package com.giangnt.kidtube.dao
 
+import android.arch.paging.DataSource
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
@@ -25,6 +26,12 @@ interface MovieDAO {
     fun getAll(): List<Movie>
 
     @Query("select * from Movie, Channel where Movie.videoChannelId = Channel.channelId")
-    fun getAllWithChannel(): List<MovieItem>
+    fun getAllWithChannel(): DataSource.Factory<Int,MovieItem>
+
+    @Query("SELECT * FROM Movie, Channel where  Movie.videoChannelId = Channel.channelId and Movie.videoChannelId = :channelId  LIMIT 5")
+    fun getMovieChannelHome(channelId: String) : DataSource.Factory<Int,MovieItem>
+
+    @Query("SELECT * FROM Movie, Channel where  Movie.videoChannelId = Channel.channelId  and Movie.videoChannelId = :channelId")
+    fun getMovieByChannel(channelId: String) : DataSource.Factory<Int,MovieItem>
 
 }

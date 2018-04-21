@@ -7,6 +7,7 @@ import com.giangnt.kidtube.net.Youtube
 import com.giangnt.kidtube.net.movie.MovieResponse
 import com.giangnt.kidtube.net.playlist.PlaylistResponse
 import com.giangnt.kidtube.net.playlist.item.PlaylistItemResponse
+import io.reactivex.Flowable
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
@@ -78,19 +79,28 @@ public class Repo {
         }
     }
 
-    fun getHomeData(context: Context, pageIndex: Int, pageSize: Int = 12): Deferred<List<MovieItem>> {
-        return async(CommonPool) {
-            AppDatabase.getInstance(context).movieDao().getAllWithChannel()
-        }
+    fun getChannelList(context: Context): Flowable<List<Channel>> {
+        return AppDatabase.getInstance(context).channelDao().getAllChannels()
     }
 
+
+//    fun getHomeData(context: Context): Deferred<List<MovieItem>> {
+//        return async(CommonPool) {
+//            AppDatabase.getInstance(context).movieDao().getAllWithChannel()
+//        }
+//    }
+
     fun getHome(pageIndex: Int, pageSize: Int = 12): ArrayList<MovieItem> {
-       return Repo.getHome(pageIndex)
+        return Repo.getHome(pageIndex)
     }
+
+
 
     fun getChannelList(pageIndex: Int, pageSize: Int = 12): ArrayList<ChannelItem> {
         return Repo.getChannelList(pageIndex, pageSize)
     }
+
+
 
     public fun getRelated(videoId: String): ArrayList<MovieItem> {
         return Repo.getRelated(videoId)

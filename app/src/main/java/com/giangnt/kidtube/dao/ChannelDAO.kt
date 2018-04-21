@@ -5,6 +5,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.giangnt.kidtube.model.Channel
+import io.reactivex.Flowable
 
 /**
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -24,5 +25,8 @@ interface ChannelDAO {
 
     @Query("SELECT * FROM Channel")
     fun getAll(): List<Channel>
+
+    @Query("SELECT * FROM Channel")
+    fun getAllChannels(): Flowable<List<Channel>>
 
 }

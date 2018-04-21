@@ -3,6 +3,7 @@ package com.giangnt.kidtube.home
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.arch.paging.PagedList
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -27,7 +28,6 @@ class HomeFragment : LoadDataFragment(), HomeClickCallback {
 
     lateinit var binding: FragmentHomeBinding
     lateinit var homeAdapter: HomeAdapter
-    lateinit var endlessScroll: EndlessRecyclerViewScrollListener
     lateinit var model: HomeViewModel
 
     var nav: MovieNav? = null
@@ -55,14 +55,6 @@ class HomeFragment : LoadDataFragment(), HomeClickCallback {
                 DividerItemDecoration.VERTICAL)
         binding.rcMovie.addItemDecoration(mDividerItemDecoration)
 
-        endlessScroll = object : EndlessRecyclerViewScrollListener(binding.rcMovie.layoutManager as LinearLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                model.getMoreHome()
-            }
-        }
-        binding.rcMovie.clearOnScrollListeners()
-        binding.rcMovie.addOnScrollListener(endlessScroll)
-
         return binding.root
     }
 
@@ -84,10 +76,7 @@ class HomeFragment : LoadDataFragment(), HomeClickCallback {
         viewModel.getObservableUser().observe(this, Observer<User> { user -> viewModel.setUser(user) })
 
 
-        viewModel.getObservableMovies().observe(this, Observer<ArrayList<MovieItem>> { items ->
-            items.let { homeAdapter.setList(items!!) }
-            binding.executePendingBindings()
-        })
+        viewModel.getObservableMovies().observe(this,Observer(homeAdapter::submitList))
     }
 
     override fun onClick(movieItem: MovieItem) {

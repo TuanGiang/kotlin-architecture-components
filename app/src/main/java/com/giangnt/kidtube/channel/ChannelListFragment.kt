@@ -7,25 +7,21 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
 import com.giangnt.kidtube.base.fragment.LoadDataFragment
 import com.giangnt.kidtube.databinding.FragmentChannelListBinding
-import com.giangnt.kidtube.model.ChannelItem
+import com.giangnt.kidtube.model.Channel
 import com.giangnt.kidtube.nav.ChannelNav
 import com.giangnt.kidtube.repo.Repo
-import com.giangnt.kidtube.support.EndlessRecyclerViewScrollListener
+
 
 class ChannelListFragment : LoadDataFragment(), ChannelClickCallback {
 
-
     lateinit var binding: FragmentChannelListBinding
     lateinit var channelAdapter: ChannelAdapter
-    lateinit var endlessScroll: EndlessRecyclerViewScrollListener
     lateinit var model: ChannelListViewModel
 
     var nav: ChannelNav? = null
@@ -54,14 +50,6 @@ class ChannelListFragment : LoadDataFragment(), ChannelClickCallback {
                 DividerItemDecoration.VERTICAL)
         binding.rcChannel.addItemDecoration(mDividerItemDecoration)
 
-        endlessScroll = object : EndlessRecyclerViewScrollListener(binding.rcChannel.layoutManager as LinearLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                model.getMoreChannel()
-            }
-        }
-        binding.rcChannel.clearOnScrollListeners()
-        binding.rcChannel.addOnScrollListener(endlessScroll)
-
         return binding.root
     }
 
@@ -80,14 +68,14 @@ class ChannelListFragment : LoadDataFragment(), ChannelClickCallback {
 
     private fun subscribeUi(viewModel: ChannelListViewModel) {
 
-        viewModel.getObservableChannels().observe(this, Observer<ArrayList<ChannelItem>> { items ->
+        viewModel.getObservableChannels().observe(this, Observer<List<Channel>> { items ->
             items.let { channelAdapter.setList(items!!) }
             binding.executePendingBindings()
         })
     }
 
-    override fun onClick(channelItem: ChannelItem) {
-        nav?.onGoChannelDetail(channelItem.channel)
+    override fun onClick(channel: Channel) {
+        nav?.onGoChannelDetail(channel)
     }
 
     companion object {

@@ -5,8 +5,13 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
 import com.giangnt.kidtube.base.viewmodel.LoginViewModel
+import com.giangnt.kidtube.entity.AppDatabase
+import com.giangnt.kidtube.model.MovieItem
 import com.giangnt.kidtube.model.Playlist
+import com.giangnt.kidtube.paging.PagingConstants
 import com.giangnt.kidtube.repo.Repo
 
 /**
@@ -20,14 +25,16 @@ import com.giangnt.kidtube.repo.Repo
  */
 class ChannelPlaylistViewModel(application: Application, var repo: Repo, val channelId: String) : LoginViewModel(application) {
 
-    val movieLiveData = MutableLiveData<ArrayList<Playlist>>()
+    private val playlistDao = AppDatabase.getInstance(application).playlistDao()
 
-    init {
-        movieLiveData.postValue(repo.getPlaylist(channelId))
-    }
+    private val allPlaylist = LivePagedListBuilder(playlistDao.getPlaylistByChannel(channelId), PagedList.Config.Builder()
+            .setPageSize(PagingConstants.PAGE_SIZE)
+            .setEnablePlaceholders(PagingConstants.ENABLE_PLACEHOLDERS)
+            .build()).build()
 
-    fun getObservableMovies(): LiveData<ArrayList<Playlist>> {
-        return movieLiveData
+
+    fun getObservablePlaylist(): LiveData<PagedList<Playlist>> {
+        return allPlaylist
     }
 
 

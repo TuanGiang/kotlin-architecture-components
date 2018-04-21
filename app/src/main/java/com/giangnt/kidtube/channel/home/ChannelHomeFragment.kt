@@ -38,7 +38,6 @@ class ChannelHomeFragment : LoadDataFragment(), HomeClickCallback {
     lateinit var model: ChannelHomeViewModel
     lateinit var binding: FragmentChannelHomeBinding
     lateinit var homeAdapter: HomeAdapter
-    lateinit var endlessScroll: EndlessRecyclerViewScrollListener
 
     var nav: MovieNav? = null
 
@@ -70,14 +69,6 @@ class ChannelHomeFragment : LoadDataFragment(), HomeClickCallback {
                 DividerItemDecoration.VERTICAL)
         binding.rcMovie.addItemDecoration(mDividerItemDecoration)
 
-        endlessScroll = object : EndlessRecyclerViewScrollListener(binding.rcMovie.layoutManager as LinearLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                model.getMore()
-            }
-        }
-        binding.rcMovie.clearOnScrollListeners()
-        binding.rcMovie.addOnScrollListener(endlessScroll)
-
         return binding.root
     }
 
@@ -85,7 +76,7 @@ class ChannelHomeFragment : LoadDataFragment(), HomeClickCallback {
         super.onActivityCreated(savedInstanceState)
 
         val factory = ChannelHomeViewModel.Factory(
-                activity!!.application, Repo())
+                activity!!.application, Repo(), channel.channelId)
 
         model = ViewModelProviders.of(this, factory)
                 .get(ChannelHomeViewModel::class.java)
@@ -95,10 +86,7 @@ class ChannelHomeFragment : LoadDataFragment(), HomeClickCallback {
     }
 
     private fun subscribeUi(model: ChannelHomeViewModel) {
-        model.getObservableMovies().observe(this, Observer<ArrayList<MovieItem>> { items ->
-            items.let { homeAdapter.setList(items!!) }
-            binding.executePendingBindings()
-        })
+        model.getObservableMovies().observe(this,Observer(homeAdapter::submitList))
     }
 
     override fun onClick(movieItem: MovieItem) {

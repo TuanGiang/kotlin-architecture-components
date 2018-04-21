@@ -37,10 +37,11 @@ class ChannelVideoFragment : LoadDataFragment(), ChannelMovieCallback {
 
     lateinit var binding: FragmentChannelVideoBinding
     lateinit var channelMovieAdapter: ChannelMovieAdapter
-    lateinit var endlessScroll: EndlessRecyclerViewScrollListener
     lateinit var model: ChannelVideoViewModel
 
     var nav: MovieNav? = null
+
+    lateinit var channelId: String
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -56,6 +57,11 @@ class ChannelVideoFragment : LoadDataFragment(), ChannelMovieCallback {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        channelId = arguments!!.getString(CHANNEL_ID)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_channel_video, container, false)
 
@@ -65,14 +71,6 @@ class ChannelVideoFragment : LoadDataFragment(), ChannelMovieCallback {
                 DividerItemDecoration.VERTICAL)
         binding.rcMovie.addItemDecoration(mDividerItemDecoration)
 
-        endlessScroll = object : EndlessRecyclerViewScrollListener(binding.rcMovie.layoutManager as LinearLayoutManager) {
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                model.getMore()
-            }
-        }
-        binding.rcMovie.clearOnScrollListeners()
-        binding.rcMovie.addOnScrollListener(endlessScroll)
-
         return binding.root
     }
 
@@ -81,7 +79,7 @@ class ChannelVideoFragment : LoadDataFragment(), ChannelMovieCallback {
         super.onActivityCreated(savedInstanceState)
 
         val factory = ChannelVideoViewModel.Factory(
-                activity!!.application, Repo())
+                activity!!.application, Repo(), channelId)
 
         model = ViewModelProviders.of(this, factory)
                 .get(ChannelVideoViewModel::class.java)
@@ -91,10 +89,7 @@ class ChannelVideoFragment : LoadDataFragment(), ChannelMovieCallback {
 
     private fun subscribeUi(viewModel: ChannelVideoViewModel) {
 
-        viewModel.getObservableMovies().observe(this, Observer<ArrayList<MovieItem>> { items ->
-            items.let { channelMovieAdapter.setList(items!!) }
-            binding.executePendingBindings()
-        })
+        viewModel.getObservableMovies().observe(this, Observer(channelMovieAdapter::submitList))
     }
 
     override fun onClick(movieItem: MovieItem) {

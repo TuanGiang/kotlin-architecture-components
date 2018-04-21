@@ -4,15 +4,15 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
 import com.giangnt.kidtube.base.fragment.LoadDataFragment
-import com.giangnt.kidtube.databinding.FragmentLoginBinding
+import com.giangnt.kidtube.databinding.FragmentPersonalBinding
 import com.giangnt.kidtube.model.User
-import kotlinx.android.synthetic.main.fragment_login.*
+import com.giangnt.kidtube.search.SearchChannelActivity
+import kotlinx.android.synthetic.main.fragment_personal.*
 
 /**
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -25,14 +25,14 @@ import kotlinx.android.synthetic.main.fragment_login.*
  */
 class PersonalFragment : LoadDataFragment() {
 
-    lateinit var binding: FragmentLoginBinding
+    lateinit var binding: FragmentPersonalBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_personal, container, false)
         return binding.root
     }
 
@@ -50,14 +50,7 @@ class PersonalFragment : LoadDataFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btnLogin.setOnClickListener { _ ->
-            val email = edtEmail.text.toString()
-            val password = edtPassword.text.toString()
-            if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password)) {
-                val user = User(email, email)
-                AccountManager.setUser(user)
-            }
-        }
+        btnAddChannel.setOnClickListener({ activity!!.startActivity(SearchChannelActivity.getIntent(activity!!))})
     }
 
     companion object {

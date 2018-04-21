@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
 import com.giangnt.kidtube.databinding.ItemChannelBinding
+import com.giangnt.kidtube.model.Channel
 import com.giangnt.kidtube.model.ChannelItem
 
 /**
@@ -19,23 +20,20 @@ import com.giangnt.kidtube.model.ChannelItem
  */
 class ChannelAdapter(val callback: ChannelClickCallback) : RecyclerView.Adapter<ChannelAdapter.ChannelHolder>() {
 
-    var items = ArrayList<ChannelItem>()
+    var items = ArrayList<Channel>()
 
-    fun setList(list: ArrayList<ChannelItem>) {
-        items = list
+    fun setList(list: List<Channel>) {
+        items.clear()
+        items.addAll(list)
         this.notifyDataSetChanged()
     }
 
-
     override fun getItemCount(): Int {
-        if (items == null) {
-            return 0
-        }
         return items.size
     }
 
     override fun onBindViewHolder(holder: ChannelAdapter.ChannelHolder, position: Int) {
-        holder.binding.channelItem = items[position]
+        holder.binding.channel = items[position]
         holder.binding.executePendingBindings()
     }
 

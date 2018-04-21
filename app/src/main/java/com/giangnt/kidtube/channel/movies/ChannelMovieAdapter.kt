@@ -1,11 +1,14 @@
 package com.giangnt.kidtube.channel.movies
 
+import android.arch.paging.PagedListAdapter
 import android.databinding.DataBindingUtil
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
 import com.giangnt.kidtube.databinding.ItemChannelMovieBinding
+import com.giangnt.kidtube.home.HomeAdapter
 import com.giangnt.kidtube.model.MovieItem
 
 /**
@@ -17,25 +20,10 @@ import com.giangnt.kidtube.model.MovieItem
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.channel.movies - ChannelMovieAdapter
  */
-class ChannelMovieAdapter(val callback: ChannelMovieCallback) : RecyclerView.Adapter<ChannelMovieAdapter.MovieHolder>() {
-
-    var items = ArrayList<MovieItem>()
-
-    fun setList(list: ArrayList<MovieItem>) {
-        items = list
-        this.notifyDataSetChanged()
-    }
-
-
-    override fun getItemCount(): Int {
-        if (items == null) {
-            return 0
-        }
-        return items.size
-    }
+class ChannelMovieAdapter(val callback: ChannelMovieCallback) :  PagedListAdapter<MovieItem, ChannelMovieAdapter.MovieHolder>(ChannelMovieAdapter.diffCallback) {
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
-        holder.binding.movieItem = items[position]
+        holder.binding.movieItem = getItem(position)
         holder.binding.executePendingBindings()
     }
 
@@ -47,5 +35,29 @@ class ChannelMovieAdapter(val callback: ChannelMovieCallback) : RecyclerView.Ada
     }
 
     public class MovieHolder(val binding: ItemChannelMovieBinding) : RecyclerView.ViewHolder(binding.root)
+
+    companion object {
+        /**
+         * This diff callback informs the PagedListAdapter how to compute list differences when new
+         * PagedLists arrive.
+         * <p>
+         * When you add a Cheese with the 'Add' button, the PagedListAdapter uses diffCallback to
+         * detect there's only a single item difference from before, so it only needs to animate and
+         * rebind a single view.
+         *
+         * @see android.support.v7.util.DiffUtil
+         */
+        private val diffCallback = object : DiffUtil.ItemCallback<MovieItem>() {
+            override fun areItemsTheSame(oldItem: MovieItem, newItem: MovieItem): Boolean =
+                    oldItem.video.videoId == newItem.video.videoId
+
+            /**
+             * Note that in kotlin, == checking on data classes compares all contents, but in Java,
+             * typically you'll implement Object#equals, and use it to compare object contents.
+             */
+            override fun areContentsTheSame(oldItem: MovieItem, newItem: MovieItem): Boolean =
+                    oldItem == newItem
+        }
+    }
 
 }

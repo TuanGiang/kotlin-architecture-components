@@ -5,8 +5,12 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
 import com.giangnt.kidtube.base.viewmodel.LoginViewModel
+import com.giangnt.kidtube.entity.AppDatabase
 import com.giangnt.kidtube.model.MovieItem
+import com.giangnt.kidtube.paging.PagingConstants
 import com.giangnt.kidtube.repo.Repo
 
 /**
@@ -18,32 +22,23 @@ import com.giangnt.kidtube.repo.Repo
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.channel.movies - ChannelVideoViewModel
  */
-class ChannelVideoViewModel (application: Application, var repo: Repo) : LoginViewModel(application) {
+class ChannelVideoViewModel (application: Application, var repo: Repo, val channelId : String) : LoginViewModel(application) {
 
-    val movieLiveData = MutableLiveData<ArrayList<MovieItem>>()
+    private val movieDao = AppDatabase.getInstance(application).movieDao()
 
-    var pageIndex = 0
+    private val allMovieItem = LivePagedListBuilder(movieDao.getMovieByChannel(channelId), PagedList.Config.Builder()
+            .setPageSize(PagingConstants.PAGE_SIZE)
+            .setEnablePlaceholders(PagingConstants.ENABLE_PLACEHOLDERS)
+            .build()).build()
 
-    init {
-        movieLiveData.postValue(repo.getHome(pageIndex))
+
+    fun getObservableMovies(): LiveData<PagedList<MovieItem>> {
+        return allMovieItem
     }
 
-    fun getObservableMovies(): LiveData<ArrayList<MovieItem>> {
-        return movieLiveData
-    }
-
-    fun getMore() {
-        pageIndex++
-        val items = repo.getHome(pageIndex)
-        val currentItems = movieLiveData.value
-        currentItems!!.addAll(items)
-        movieLiveData.postValue(currentItems)
-    }
-
-
-    class Factory(val application: Application, val repo: Repo) : ViewModelProvider.NewInstanceFactory() {
+    class Factory(val application: Application, val repo: Repo, val channelId : String) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ChannelVideoViewModel(application, repo) as T
+            return ChannelVideoViewModel(application, repo, channelId) as T
         }
     }
 }

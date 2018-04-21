@@ -14,14 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imgCover"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/channel_cover_height"
-            android:scaleType="fitXY"
-            app:imageUrl="@{channel.thumbnail}"
-            app:layout_constraintEnd_toEndOf="parent" />
-
 
         <ImageView
             android:id="@+id/imgChannel"
@@ -32,7 +24,7 @@
             android:scaleType="centerCrop"
             app:imageUrl="@{channel.thumbnail}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgCover" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvChannelName"
@@ -40,11 +32,11 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:text="@{channel.title}"
-            app:layout_constraintEnd_toEndOf="@+id/imgCover"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgChannel"
-            app:layout_constraintTop_toBottomOf="@+id/imgCover" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvChannelDescription"

@@ -1,6 +1,6 @@
 package com.giangnt.kidtube.channel
 
-import com.giangnt.kidtube.model.ChannelItem
+import com.giangnt.kidtube.model.Channel
 
 /**
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -12,5 +12,5 @@ import com.giangnt.kidtube.model.ChannelItem
  * Location: com.giangnt.kidtube.channel - ChannelClickCallback
  */
 interface ChannelClickCallback {
-    fun onClick(channelItem: ChannelItem)
+    fun onClick(channel: Channel)
 }

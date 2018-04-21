@@ -1,10 +1,13 @@
 package com.giangnt.kidtube.channel.playlist
 
+import android.arch.paging.PagedListAdapter
 import android.databinding.DataBindingUtil
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
+import com.giangnt.kidtube.channel.movies.ChannelMovieAdapter
 import com.giangnt.kidtube.databinding.ItemPlaylistBinding
 import com.giangnt.kidtube.model.MovieItem
 import com.giangnt.kidtube.model.Playlist
@@ -18,25 +21,10 @@ import com.giangnt.kidtube.model.Playlist
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.channel.playlist - ChannelPlaylistAdapter
  */
-class ChannelPlaylistAdapter(val callback: ChannelPlaylistCallback) : RecyclerView.Adapter<ChannelPlaylistAdapter.PlaylistHolder>() {
-
-    var items = ArrayList<Playlist>()
-
-    fun setList(list: ArrayList<Playlist>) {
-        items = list
-        this.notifyDataSetChanged()
-    }
-
-
-    override fun getItemCount(): Int {
-        if (items == null) {
-            return 0
-        }
-        return items.size
-    }
+class ChannelPlaylistAdapter(val callback: ChannelPlaylistCallback) : PagedListAdapter<Playlist, ChannelPlaylistAdapter.PlaylistHolder>(ChannelPlaylistAdapter.diffCallback) {
 
     override fun onBindViewHolder(holder: PlaylistHolder, position: Int) {
-        holder.binding.playlist = items[position]
+        holder.binding.playlist = getItem(position)
         holder.binding.executePendingBindings()
     }
 
@@ -48,4 +36,28 @@ class ChannelPlaylistAdapter(val callback: ChannelPlaylistCallback) : RecyclerVi
     }
 
     public class PlaylistHolder(val binding: ItemPlaylistBinding) : RecyclerView.ViewHolder(binding.root)
+
+    companion object {
+        /**
+         * This diff callback informs the PagedListAdapter how to compute list differences when new
+         * PagedLists arrive.
+         * <p>
+         * When you add a Cheese with the 'Add' button, the PagedListAdapter uses diffCallback to
+         * detect there's only a single item difference from before, so it only needs to animate and
+         * rebind a single view.
+         *
+         * @see android.support.v7.util.DiffUtil
+         */
+        private val diffCallback = object : DiffUtil.ItemCallback<Playlist>() {
+            override fun areItemsTheSame(oldItem: Playlist, newItem: Playlist): Boolean =
+                    oldItem.id == newItem.id
+
+            /**
+             * Note that in kotlin, == checking on data classes compares all contents, but in Java,
+             * typically you'll implement Object#equals, and use it to compare object contents.
+             */
+            override fun areContentsTheSame(oldItem: Playlist, newItem: Playlist): Boolean =
+                    oldItem == newItem
+        }
+    }
 }

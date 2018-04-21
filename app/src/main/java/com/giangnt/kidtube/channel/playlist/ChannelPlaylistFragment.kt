@@ -31,7 +31,7 @@ class ChannelPlaylistFragment : LoadDataFragment(), ChannelPlaylistCallback {
     lateinit var binding: FragmentChannelPlaylistBinding
     lateinit var channelPlaylistAdapter: ChannelPlaylistAdapter
     lateinit var model: ChannelPlaylistViewModel
-    var channelId: String? = null
+    lateinit var channelId: String
 
     var nav: PlaylistNav? = null
 
@@ -51,7 +51,7 @@ class ChannelPlaylistFragment : LoadDataFragment(), ChannelPlaylistCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        channelId = arguments!!.get(CHANNEL_ID) as String?
+        channelId = arguments!!.getString(CHANNEL_ID)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -85,10 +85,7 @@ class ChannelPlaylistFragment : LoadDataFragment(), ChannelPlaylistCallback {
 
     private fun subscribeUi(viewModel: ChannelPlaylistViewModel) {
 
-        viewModel.getObservableMovies().observe(this, Observer<ArrayList<Playlist>> { items ->
-            items.let { channelPlaylistAdapter.setList(items!!) }
-            binding.executePendingBindings()
-        })
+        viewModel.getObservablePlaylist().observe(this, Observer(channelPlaylistAdapter::submitList))
     }
 
     companion object {

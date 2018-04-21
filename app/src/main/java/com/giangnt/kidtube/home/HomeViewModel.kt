@@ -2,13 +2,15 @@ package com.giangnt.kidtube.home
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
 import com.giangnt.kidtube.base.viewmodel.LoginViewModel
+import com.giangnt.kidtube.entity.AppDatabase
 import com.giangnt.kidtube.model.MovieItem
+import com.giangnt.kidtube.paging.PagingConstants
 import com.giangnt.kidtube.repo.Repo
-import kotlinx.coroutines.experimental.launch
 
 /**
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -21,34 +23,16 @@ import kotlinx.coroutines.experimental.launch
  */
 class HomeViewModel(application: Application, var repo: Repo) : LoginViewModel(application) {
 
-    val movieLiveData = MutableLiveData<ArrayList<MovieItem>>()
+    private val movieDao = AppDatabase.getInstance(application).movieDao()
 
-    var pageIndex = 0
+    private val allMovieItem = LivePagedListBuilder(movieDao.getAllWithChannel(), PagedList.Config.Builder()
+            .setPageSize(PagingConstants.PAGE_SIZE)
+            .setEnablePlaceholders(PagingConstants.ENABLE_PLACEHOLDERS)
+            .build()).build()
 
-//    init {
-//        movieLiveData.postValue(repo.getHome(pageIndex))
-//    }
-    init {
-        getHome()
-    }
 
-    fun getHome() {
-        launch {
-            val firstData = repo.getHomeData(getApplication(), 0).await()
-            movieLiveData.postValue(firstData as ArrayList<MovieItem>?)
-        }
-    }
-
-    fun getObservableMovies(): LiveData<ArrayList<MovieItem>> {
-        return movieLiveData
-    }
-
-    fun getMoreHome() {
-        pageIndex++
-        val items = repo.getHome(pageIndex)
-        val currentItems = movieLiveData.value
-        currentItems!!.addAll(items)
-        movieLiveData.postValue(currentItems)
+    fun getObservableMovies(): LiveData<PagedList<MovieItem>> {
+        return allMovieItem
     }
 
 
