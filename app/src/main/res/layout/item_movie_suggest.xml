@@ -35,15 +35,15 @@
             android:ellipsize="end"
             android:maxLines="3"
             android:text="@{movieItem.video.title}"
-            app:layout_constraintEnd_toStartOf="@+id/ibtnAddTo"
+            app:layout_constraintEnd_toStartOf="@+id/imgActions"
             app:layout_constraintStart_toEndOf="@+id/imgMovie"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/ibtnAddTo"
+        <ImageView
+            android:id="@+id/imgActions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/btn_dialog"
+            android:src="@drawable/ic_more_vert_black_24px"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -57,7 +57,7 @@ class ChannelPlaylistFragment : LoadDataFragment(), ChannelPlaylistCallback {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_channel_playlist, container, false)
 
-        channelPlaylistAdapter = ChannelPlaylistAdapter(this)
+        channelPlaylistAdapter = ChannelPlaylistAdapter(this, this)
         binding.rcPlaylist.adapter = channelPlaylistAdapter
         val mDividerItemDecoration = DividerItemDecoration(binding.rcPlaylist.context,
                 DividerItemDecoration.VERTICAL)

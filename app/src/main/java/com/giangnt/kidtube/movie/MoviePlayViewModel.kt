@@ -41,6 +41,7 @@ class MoviePlayViewModel(application: Application, val repo: Repo, val videoId: 
     }
 
 
+
     class Factory(val application: Application, val repo: Repo, val videoId: String) : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return MoviePlayViewModel(application, repo, videoId) as T

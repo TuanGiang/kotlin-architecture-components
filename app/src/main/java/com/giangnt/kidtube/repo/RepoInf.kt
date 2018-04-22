@@ -23,6 +23,12 @@ import kotlinx.coroutines.experimental.async
  */
 public class Repo {
 
+    fun saveMyVideos(context: Context, arrayOf: List<MyVideo>): Deferred<Any> {
+        return async(CommonPool) {
+            AppDatabase.getInstance(context).myVideoDao().insertAll(arrayOf)
+        }
+    }
+
     fun saveChannels(context: Context, channels: ArrayList<Channel>): Deferred<Any> {
         return async(CommonPool) {
             AppDatabase.getInstance(context).channelDao().insertAll(channels)
@@ -51,6 +57,18 @@ public class Repo {
     fun getPlayLists(context: Context): Deferred<List<Playlist>> {
         return async(CommonPool) {
             AppDatabase.getInstance(context).playlistDao().getAll()
+        }
+    }
+
+    fun getMyVideos(context: Context): Deferred<List<MyVideo>> {
+        return async(CommonPool) {
+            AppDatabase.getInstance(context).myVideoDao().getAll()
+        }
+    }
+
+    fun getMovieIdByPlayList(context: Context, playlistId: String): Deferred<List<String>> {
+        return async(CommonPool) {
+            AppDatabase.getInstance(context).movieDao().getMovieIdByPlaylist(playlistId)
         }
     }
 
@@ -95,11 +113,9 @@ public class Repo {
     }
 
 
-
     fun getChannelList(pageIndex: Int, pageSize: Int = 12): ArrayList<ChannelItem> {
         return Repo.getChannelList(pageIndex, pageSize)
     }
-
 
 
     public fun getRelated(videoId: String): ArrayList<MovieItem> {
@@ -109,6 +125,7 @@ public class Repo {
     public fun getPlaylist(channelId: String): ArrayList<Playlist> {
         return Repo.getPlaylist(channelId)
     }
+
 
     companion object {
         public fun getHome(pageIndex: Int, pageSize: Int = 12): ArrayList<MovieItem> {

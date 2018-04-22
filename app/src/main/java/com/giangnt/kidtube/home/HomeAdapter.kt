@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
+import com.giangnt.kidtube.action.ClickActionCallBack
 import com.giangnt.kidtube.databinding.ItemMovieBinding
 import com.giangnt.kidtube.model.MovieItem
 
@@ -19,7 +20,7 @@ import com.giangnt.kidtube.model.MovieItem
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.base - HomeAdapter
  */
-class HomeAdapter(val callback: HomeClickCallback) : PagedListAdapter<MovieItem, HomeAdapter.MovieHolder>(diffCallback) {
+class HomeAdapter(val callback: HomeClickCallback, val actionCallBack: ClickActionCallBack) : PagedListAdapter<MovieItem, HomeAdapter.MovieHolder>(diffCallback) {
 
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
@@ -31,6 +32,7 @@ class HomeAdapter(val callback: HomeClickCallback) : PagedListAdapter<MovieItem,
         val binding: ItemMovieBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_movie,
                 parent, false)
         binding.callBack = callback
+        binding.actionCallBack = actionCallBack
         return MovieHolder(binding)
     }
 

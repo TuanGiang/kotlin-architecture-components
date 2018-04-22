@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="com.giangnt.kidtube.action.ActionType" />
+
+        <variable
+            name="actionCallBack"
+            type="com.giangnt.kidtube.action.ClickActionCallBack" />
 
         <variable
             name="callback"
@@ -40,15 +45,16 @@
             android:ellipsize="end"
             android:maxLines="3"
             android:text="@{playlist.title}"
-            app:layout_constraintEnd_toStartOf="@+id/ibtnAddTo"
+            app:layout_constraintEnd_toStartOf="@+id/imgActions"
             app:layout_constraintStart_toEndOf="@+id/imgPlaylist"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/ibtnAddTo"
+        <ImageView
+            android:id="@+id/imgActions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/btn_dialog"
+            android:src="@drawable/ic_more_vert_black_24px"
+            android:onClick="@{()->actionCallBack.onClickAction(playlist.id , ActionType.PLAYLIST )}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

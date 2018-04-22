@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
+import com.giangnt.kidtube.action.ClickActionCallBack
 import com.giangnt.kidtube.channel.movies.ChannelMovieAdapter
 import com.giangnt.kidtube.databinding.ItemPlaylistBinding
 import com.giangnt.kidtube.model.MovieItem
@@ -21,7 +22,7 @@ import com.giangnt.kidtube.model.Playlist
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.channel.playlist - ChannelPlaylistAdapter
  */
-class ChannelPlaylistAdapter(val callback: ChannelPlaylistCallback) : PagedListAdapter<Playlist, ChannelPlaylistAdapter.PlaylistHolder>(ChannelPlaylistAdapter.diffCallback) {
+class ChannelPlaylistAdapter(val callback: ChannelPlaylistCallback,val actionCallBack: ClickActionCallBack) : PagedListAdapter<Playlist, ChannelPlaylistAdapter.PlaylistHolder>(ChannelPlaylistAdapter.diffCallback) {
 
     override fun onBindViewHolder(holder: PlaylistHolder, position: Int) {
         holder.binding.playlist = getItem(position)
@@ -32,6 +33,7 @@ class ChannelPlaylistAdapter(val callback: ChannelPlaylistCallback) : PagedListA
         val binding: ItemPlaylistBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_playlist,
                 parent, false)
         binding.callback = callback
+        binding.actionCallBack = actionCallBack
         return PlaylistHolder(binding)
     }
 

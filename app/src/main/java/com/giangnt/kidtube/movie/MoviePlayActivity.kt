@@ -28,12 +28,14 @@ class MoviePlayActivity : AppCompatActivity() {
     lateinit var adapter: PlayMovieAdapter
 
     lateinit var movie: MovieItem
+    lateinit var movies: ArrayList<MovieItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_play)
 
         movie = intent.extras.getSerializable(ITEM) as MovieItem
+        movies = intent.extras.getSerializable(ITEMS) as ArrayList<MovieItem>
 
         adapter = PlayMovieAdapter()
         binding.rcMovie.adapter = adapter
@@ -43,6 +45,7 @@ class MoviePlayActivity : AppCompatActivity() {
         model = ViewModelProviders.of(this, factory)
                 .get(MoviePlayViewModel::class.java)
         model.setMovie(movie)
+        model.setList(movies)
         binding.movieModel = model
         subscribeUi(model)
     }
@@ -56,9 +59,11 @@ class MoviePlayActivity : AppCompatActivity() {
 
     companion object {
         public val ITEM = "ITEM"
-        fun getIntent(context: Context, item: MovieItem): Intent {
+        public val ITEMS = "ITEMS"
+        fun getIntent(context: Context, item: MovieItem, items : ArrayList<MovieItem>): Intent {
             val intent = Intent(context, MoviePlayActivity::class.java)
             intent.putExtra(ITEM, item)
+            intent.putExtra(ITEMS, items)
             return intent
         }
     }

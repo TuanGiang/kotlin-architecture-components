@@ -65,7 +65,7 @@ class ChannelVideoFragment : LoadDataFragment(), ChannelMovieCallback {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_channel_video, container, false)
 
-        channelMovieAdapter = ChannelMovieAdapter(this)
+        channelMovieAdapter = ChannelMovieAdapter(this, this)
         binding.rcMovie.adapter = channelMovieAdapter
         val mDividerItemDecoration = DividerItemDecoration(binding.rcMovie.context,
                 DividerItemDecoration.VERTICAL)

@@ -3,13 +3,10 @@ package com.giangnt.kidtube.entity
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
+import android.arch.persistence.room.TypeConverters
 import android.content.Context
-import com.giangnt.kidtube.dao.ChannelDAO
-import com.giangnt.kidtube.dao.MovieDAO
-import com.giangnt.kidtube.dao.PlaylistDAO
-import com.giangnt.kidtube.model.Channel
-import com.giangnt.kidtube.model.Movie
-import com.giangnt.kidtube.model.Playlist
+import com.giangnt.kidtube.dao.*
+import com.giangnt.kidtube.model.*
 
 /**
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -20,13 +17,18 @@ import com.giangnt.kidtube.model.Playlist
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.entity - AppDatabase
  */
-@Database(entities = arrayOf(Channel::class, Playlist::class, Movie::class), version = 1)
+@Database(entities = arrayOf(Channel::class, Playlist::class, Movie::class, MyVideo::class, WatchMovieHistory::class), version = 1)
+@TypeConverters(DateTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun channelDao(): ChannelDAO
 
     abstract fun playlistDao(): PlaylistDAO
 
     abstract fun movieDao(): MovieDAO
+
+    abstract fun myVideoDao(): MyVideoDAO
+
+    abstract fun watchHistory(): WatchHistoryDAO
 
     companion object {
         val DB_NAME = "MYDB.db"

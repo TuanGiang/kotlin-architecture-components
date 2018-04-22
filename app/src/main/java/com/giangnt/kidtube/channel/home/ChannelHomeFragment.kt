@@ -13,6 +13,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
+import com.giangnt.kidtube.action.ActionType
+import com.giangnt.kidtube.action.ClickActionCallBack
 import com.giangnt.kidtube.base.fragment.LoadDataFragment
 import com.giangnt.kidtube.databinding.FragmentChannelHomeBinding
 import com.giangnt.kidtube.home.HomeAdapter
@@ -32,7 +34,7 @@ import com.giangnt.kidtube.support.EndlessRecyclerViewScrollListener
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.channel - ChannelHomeFragment
  */
-class ChannelHomeFragment : LoadDataFragment(), HomeClickCallback {
+class ChannelHomeFragment : LoadDataFragment(), HomeClickCallback, ClickActionCallBack {
 
     lateinit var channel: Channel
     lateinit var model: ChannelHomeViewModel
@@ -63,7 +65,7 @@ class ChannelHomeFragment : LoadDataFragment(), HomeClickCallback {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_channel_home, container, false)
 
-        homeAdapter = HomeAdapter(this)
+        homeAdapter = HomeAdapter(this, this)
         binding.rcMovie.adapter = homeAdapter
         val mDividerItemDecoration = DividerItemDecoration(binding.rcMovie.context,
                 DividerItemDecoration.VERTICAL)
@@ -85,11 +87,17 @@ class ChannelHomeFragment : LoadDataFragment(), HomeClickCallback {
         subscribeUi(model)
     }
 
+    override fun onClickAction(id: String, type: ActionType) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+
     private fun subscribeUi(model: ChannelHomeViewModel) {
         model.getObservableMovies().observe(this,Observer(homeAdapter::submitList))
     }
 
     override fun onClick(movieItem: MovieItem) {
+        val items = ArrayList<MovieItem>()
         nav?.onGoPlayVideo(movieItem)
     }
 

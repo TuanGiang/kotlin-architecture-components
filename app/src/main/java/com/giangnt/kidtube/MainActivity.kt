@@ -75,8 +75,8 @@ class MainActivity : AppCompatActivity(), FragNavController.TransactionListener,
 
     }
 
-    override fun onGoPlayVideo(movieItem: MovieItem) {
-        startActivity(MoviePlayActivity.getIntent(this, movieItem))
+    override fun onGoPlayVideo(movieItem: MovieItem, items:  ArrayList<MovieItem>) {
+        startActivity(MoviePlayActivity.getIntent(this, movieItem, items))
     }
 
     override fun getRootFragment(p0: Int): Fragment {

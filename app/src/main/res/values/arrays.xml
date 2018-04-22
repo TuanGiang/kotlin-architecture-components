@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="actions">
+        <item>Add to my playlist</item>
+        <item>Nothing</item>
+    </string-array>
+
+    <string-array name="removes">
+        <item>Remove from playlist</item>
+        <item>Nothing</item>
+    </string-array>
+</resources>
