@@ -11,7 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
-import com.giangnt.kidtube.base.fragment.LoadDataFragment
+import com.giangnt.kidtube.base.fragment.DataFragment
 import com.giangnt.kidtube.databinding.FragmentChannelPlaylistBinding
 import com.giangnt.kidtube.model.Playlist
 import com.giangnt.kidtube.nav.PlaylistNav
@@ -26,7 +26,7 @@ import com.giangnt.kidtube.repo.Repo
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.channel - ChannelPlaylistFragment
  */
-class ChannelPlaylistFragment : LoadDataFragment(), ChannelPlaylistCallback {
+class ChannelPlaylistFragment : DataFragment(), ChannelPlaylistCallback {
 
     lateinit var binding: FragmentChannelPlaylistBinding
     lateinit var channelPlaylistAdapter: ChannelPlaylistAdapter

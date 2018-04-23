@@ -7,7 +7,7 @@ import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
 import com.giangnt.kidtube.model.Movie
 import com.giangnt.kidtube.model.MovieItem
-import com.giangnt.kidtube.model.MyMovieItem
+import io.reactivex.Flowable
 
 /**
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -48,4 +48,18 @@ interface MovieDAO {
     @Query("SELECT Movie.videoId FROM Movie where Movie.videoPlaylistId = :playListId")
     fun getMovieIdByPlaylist(playListId: String) : List<String>
 
+    @Query("SELECT * FROM Movie, Channel where Movie.videoChannelId = Channel.channelId and Movie.videoPlaylistId = :playlistId and Movie.videoId != :videoId LIMIT 10")
+    fun getHomeVideoRelated(playlistId: String, videoId: String): Flowable<List<MovieItem>>
+
+    @Query("SELECT * FROM Movie, Channel where Movie.videoChannelId = Channel.channelId and Movie.videoChannelId = :channelId and Movie.videoId != :videoId  LIMIT 10")
+    fun getChannelVideoRelated(channelId: String, videoId: String): Flowable<List<MovieItem>>
+
+    @Query("SELECT * FROM Movie, Channel where Movie.videoChannelId = Channel.channelId and Movie.videoPlaylistId = :playlistId and Movie.videoId != :videoId  LIMIT 10")
+    fun getPlaylistVideoRelated(playlistId: String, videoId: String): Flowable<List<MovieItem>>
+
+    @Query("SELECT * FROM Movie, Channel, MyVideo where  Movie.videoId!= :videoId and Movie.videoChannelId = Channel.channelId and Movie.videoId = MyVideo.myVideoId")
+    fun getMyVideoRelated(videoId: String): Flowable<List<MovieItem>>
+
+    @Query("SELECT * FROM Movie, Channel where Movie.videoChannelId = Channel.channelId and Movie.videoPlaylistId = :playlistId and Movie.playListPosition = 0 LIMIT 1")
+    fun getFirstPlaylistVideo(playlistId: String): MovieItem
 }

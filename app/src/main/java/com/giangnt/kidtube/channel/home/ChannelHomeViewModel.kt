@@ -2,15 +2,12 @@ package com.giangnt.kidtube.channel.home
 
 import android.app.Application
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
-import android.databinding.ObservableField
-import com.giangnt.kidtube.base.viewmodel.LoginViewModel
+import com.giangnt.kidtube.base.viewmodel.BaseViewModel
 import com.giangnt.kidtube.entity.AppDatabase
-import com.giangnt.kidtube.model.ChannelItem
 import com.giangnt.kidtube.model.MovieItem
 import com.giangnt.kidtube.paging.PagingConstants
 import com.giangnt.kidtube.repo.Repo
@@ -24,7 +21,7 @@ import com.giangnt.kidtube.repo.Repo
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.channel.home - ChannelHomeViewModel
  */
-class ChannelHomeViewModel(application: Application, val repo: Repo, val channelId : String) : LoginViewModel(application) {
+class ChannelHomeViewModel(application: Application, val repo: Repo, val channelId : String) : BaseViewModel(application) {
     private val movieDao = AppDatabase.getInstance(application).movieDao()
 
     private val allMovieItem = LivePagedListBuilder(movieDao.getMovieChannelHome(channelId), PagedList.Config.Builder()

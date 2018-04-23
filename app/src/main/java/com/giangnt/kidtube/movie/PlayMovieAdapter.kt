@@ -20,16 +20,16 @@ import com.giangnt.kidtube.model.MovieItem
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.movie - PlayMovieAdapter
  */
-class PlayMovieAdapter : Adapter<RecyclerView.ViewHolder>() {
+class PlayMovieAdapter(val callback: PlayMovieClickCallback) : Adapter<RecyclerView.ViewHolder>() {
 
     private val TYPE_INFO = 0
     private val TYPE_SUGGEST_HEADER = 1
     private val TYPE_SUGGEST = 2
 
     var selectedItem: MovieItem? = null
-    var items: ArrayList<MovieItem>? = null
+    var items: List<MovieItem>? = null
 
-    fun setData(item: MovieItem, list: ArrayList<MovieItem>?) {
+    fun setData(item: MovieItem, list: List<MovieItem>?) {
         this.selectedItem = item
         items = list
         this.notifyDataSetChanged()
@@ -46,6 +46,7 @@ class PlayMovieAdapter : Adapter<RecyclerView.ViewHolder>() {
             }
             is MovieSuggestHolder -> {
                 holder.binding.movieItem = items!![position - 2]
+                holder.binding.callBack = callback
                 holder.binding.executePendingBindings()
             }
         }

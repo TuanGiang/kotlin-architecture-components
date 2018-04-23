@@ -14,5 +14,5 @@ import com.giangnt.kidtube.model.MovieItem
  */
 interface MovieNav {
     fun onGoChannelDetail(channel: Channel)
-    fun onGoPlayVideo(movieItem: MovieItem, items : ArrayList<MovieItem>)
+    fun onGoPlayVideo(movieItem: MovieItem, from : String)
 }

@@ -11,14 +11,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
-import com.giangnt.kidtube.base.fragment.LoadDataFragment
+import com.giangnt.kidtube.base.fragment.DataFragment
 import com.giangnt.kidtube.databinding.FragmentChannelListBinding
 import com.giangnt.kidtube.model.Channel
 import com.giangnt.kidtube.nav.ChannelNav
 import com.giangnt.kidtube.repo.Repo
 
 
-class ChannelListFragment : LoadDataFragment(), ChannelClickCallback {
+class ChannelListFragment : DataFragment(), ChannelClickCallback {
 
     lateinit var binding: FragmentChannelListBinding
     lateinit var channelAdapter: ChannelAdapter

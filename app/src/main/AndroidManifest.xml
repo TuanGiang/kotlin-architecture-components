@@ -12,8 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait">
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +20,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".movie.MoviePlayActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".movie.MoviePlayActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".search.SearchChannelActivity"

@@ -1,7 +1,7 @@
 package com.giangnt.kidtube.account
 
 import android.app.Application
-import com.giangnt.kidtube.base.viewmodel.LoginViewModel
+import com.giangnt.kidtube.base.viewmodel.BaseViewModel
 
 /**
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -12,4 +12,4 @@ import com.giangnt.kidtube.base.viewmodel.LoginViewModel
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.account - PersonalViewModel
  */
-class PersonalViewModel(application: Application) : LoginViewModel(application)
+class PersonalViewModel(application: Application) : BaseViewModel(application)

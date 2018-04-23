@@ -11,16 +11,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
-import com.giangnt.kidtube.base.fragment.LoadDataFragment
+import com.giangnt.kidtube.base.fragment.DataFragment
 import com.giangnt.kidtube.databinding.FragmentHomeBinding
 import com.giangnt.kidtube.model.Channel
 import com.giangnt.kidtube.model.MovieItem
 import com.giangnt.kidtube.model.User
+import com.giangnt.kidtube.movie.MoviePlayActivity
 import com.giangnt.kidtube.nav.MovieNav
 import com.giangnt.kidtube.repo.Repo
 
 
-class HomeFragment : LoadDataFragment(), HomeClickCallback {
+class HomeFragment : DataFragment(), HomeClickCallback {
 
 
     lateinit var binding: FragmentHomeBinding
@@ -78,7 +79,7 @@ class HomeFragment : LoadDataFragment(), HomeClickCallback {
 
 
     override fun onClick(movieItem: MovieItem) {
-        nav?.onGoPlayVideo(movieItem)
+        nav?.onGoPlayVideo(movieItem, MoviePlayActivity.FROM_HOME )
     }
 
     override fun onClickChannel(channel: Channel) {

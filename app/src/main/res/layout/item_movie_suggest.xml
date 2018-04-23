@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="callBack"
+            type="com.giangnt.kidtube.movie.PlayMovieClickCallback" />
         <variable
             name="movieItem"
             type="com.giangnt.kidtube.model.MovieItem" />
@@ -12,6 +14,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{()->callBack.onClick(movieItem)}"
         android:padding="8dp">
 
         <ImageView

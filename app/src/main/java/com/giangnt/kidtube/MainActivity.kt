@@ -9,14 +9,18 @@ import com.giangnt.kidtube.channel.detail.ChannelFragment
 import com.giangnt.kidtube.home.HomeFragment
 import com.giangnt.kidtube.model.Channel
 import com.giangnt.kidtube.model.MovieItem
+import com.giangnt.kidtube.model.Playlist
 import com.giangnt.kidtube.movie.MoviePlayActivity
 import com.giangnt.kidtube.nav.ChannelNav
 import com.giangnt.kidtube.nav.MovieNav
+import com.giangnt.kidtube.nav.PlaylistNav
 import com.giangnt.kidtube.owner.MyVideoFragment
+import com.giangnt.kidtube.repo.Repo
 import com.ncapdevi.fragnav.FragNavController
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.experimental.launch
 
-class MainActivity : AppCompatActivity(), FragNavController.TransactionListener, FragNavController.RootFragmentListener, ChannelNav, MovieNav {
+class MainActivity : AppCompatActivity(), FragNavController.TransactionListener, FragNavController.RootFragmentListener, ChannelNav, MovieNav, PlaylistNav {
 
     private val TAB_HOME = 0
     private val TAB_OWNER = 1
@@ -75,8 +79,20 @@ class MainActivity : AppCompatActivity(), FragNavController.TransactionListener,
 
     }
 
-    override fun onGoPlayVideo(movieItem: MovieItem, items:  ArrayList<MovieItem>) {
-        startActivity(MoviePlayActivity.getIntent(this, movieItem, items))
+    override fun onGoPlayVideo(movieItem: MovieItem, from: String) {
+        startActivity(MoviePlayActivity.getIntent(this, movieItem, from))
+    }
+
+    override fun onGoPlaylist(playlist: Playlist) {
+        launch {
+            val repo = Repo()
+            val firstItem = repo.getFirstPlaylistVideo(application, playlist.id).await()
+            onGoPlaylistMovie(firstItem)
+        }
+    }
+
+    fun onGoPlaylistMovie(item: MovieItem) {
+        startActivity(MoviePlayActivity.getIntent(this, item, MoviePlayActivity.FROM_PLAYLIST))
     }
 
     override fun getRootFragment(p0: Int): Fragment {

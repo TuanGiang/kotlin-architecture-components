@@ -9,7 +9,7 @@ import com.giangnt.kidtube.model.MyVideo
 import com.giangnt.kidtube.repo.Repo
 import kotlinx.coroutines.experimental.launch
 
-public abstract class LoadDataFragment : BaseFragment(), ClickActionCallBack {
+public abstract class DataFragment : BaseFragment(), ClickActionCallBack {
 
     override fun onClickAction(id: String, type: ActionType) {
         MaterialDialog.Builder(context!!)

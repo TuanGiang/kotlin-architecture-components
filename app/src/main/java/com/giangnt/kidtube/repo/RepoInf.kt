@@ -101,6 +101,28 @@ public class Repo {
         return AppDatabase.getInstance(context).channelDao().getAllChannels()
     }
 
+    fun getHomeVideoRelated(context: Context, playlistId : String, videoId: String): Flowable<List<MovieItem>>  {
+        return AppDatabase.getInstance(context).movieDao().getHomeVideoRelated(playlistId, videoId)
+    }
+
+    fun getChannelVideoRelated(context: Context, channelId : String, videoId: String): Flowable<List<MovieItem>>  {
+        return AppDatabase.getInstance(context).movieDao().getChannelVideoRelated(channelId, videoId)
+    }
+
+    fun getPlaylistVideoRelated(context: Context, playlistId : String, videoId: String): Flowable<List<MovieItem>>  {
+        return AppDatabase.getInstance(context).movieDao().getPlaylistVideoRelated(playlistId, videoId)
+    }
+
+    fun getMyVideoRelated(context: Context, videoId: String): Flowable<List<MovieItem>>  {
+        return AppDatabase.getInstance(context).movieDao().getMyVideoRelated(videoId)
+    }
+
+    fun getFirstPlaylistVideo(context: Context, playlistId: String): Deferred<MovieItem> {
+        return async(CommonPool) {
+            AppDatabase.getInstance(context).movieDao().getFirstPlaylistVideo(playlistId)
+        }
+    }
+
 
 //    fun getHomeData(context: Context): Deferred<List<MovieItem>> {
 //        return async(CommonPool) {
@@ -165,5 +187,8 @@ public class Repo {
             return playlists
         }
     }
+
+
+
 
 }

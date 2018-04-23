@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
-import com.giangnt.kidtube.base.fragment.LoadDataFragment
+import com.giangnt.kidtube.base.fragment.DataFragment
 import com.giangnt.kidtube.databinding.FragmentPersonalBinding
 import com.giangnt.kidtube.model.User
 import com.giangnt.kidtube.search.SearchChannelActivity
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_personal.*
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.account - PersonalFragment
  */
-class PersonalFragment : LoadDataFragment() {
+class PersonalFragment : DataFragment() {
 
     lateinit var binding: FragmentPersonalBinding
 

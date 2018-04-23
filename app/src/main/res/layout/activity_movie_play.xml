@@ -13,17 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imgMovie"
+        <fragment
+            android:id="@+id/player"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:scaleType="fitXY"
-            app:imageUrl="@{movieModel.movieItem.video.thumbnail}"
-            app:layout_constraintDimensionRatio="2:1"
+            app:layout_constraintDimensionRatio="5:3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
-
+            app:layout_constraintStart_toStartOf="parent"
+            android:name="com.google.android.youtube.player.YouTubePlayerFragment">
+        </fragment>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rcMovie"
@@ -33,7 +32,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgMovie"
+            app:layout_constraintTop_toBottomOf="@+id/player"
             app:layoutManager="LinearLayoutManager">
 
         </android.support.v7.widget.RecyclerView>

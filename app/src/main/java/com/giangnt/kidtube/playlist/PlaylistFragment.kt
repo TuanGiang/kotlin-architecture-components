@@ -1,6 +1,6 @@
 package com.giangnt.kidtube.playlist
 
-import com.giangnt.kidtube.base.fragment.LoadDataFragment
+import com.giangnt.kidtube.base.fragment.DataFragment
 
-class PlaylistFragment : LoadDataFragment() {
+class PlaylistFragment : DataFragment() {
 }

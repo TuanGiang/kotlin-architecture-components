@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
-import com.giangnt.kidtube.base.fragment.LoadDataFragment
+import com.giangnt.kidtube.base.fragment.DataFragment
 import com.giangnt.kidtube.model.Channel
 import kotlinx.android.synthetic.main.fragment_channel.*
 
-class ChannelFragment : LoadDataFragment() {
+class ChannelFragment : DataFragment() {
     lateinit var channelPagerAdapter: ChannelPagerAdapter
     lateinit var channel: Channel
 

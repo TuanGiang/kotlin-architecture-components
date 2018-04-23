@@ -13,18 +13,18 @@ import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import com.giangnt.kidtube.R
 import com.giangnt.kidtube.action.ActionType
-import com.giangnt.kidtube.base.fragment.LoadDataFragment
+import com.giangnt.kidtube.base.fragment.DataFragment
 import com.giangnt.kidtube.databinding.FragmentMyVideoBinding
 import com.giangnt.kidtube.home.HomeAdapter
 import com.giangnt.kidtube.home.HomeClickCallback
-import com.giangnt.kidtube.home.HomeViewModel
 import com.giangnt.kidtube.model.Channel
 import com.giangnt.kidtube.model.MovieItem
 import com.giangnt.kidtube.model.User
+import com.giangnt.kidtube.movie.MoviePlayActivity
 import com.giangnt.kidtube.nav.MovieNav
 import com.giangnt.kidtube.repo.Repo
 
-class MyVideoFragment : LoadDataFragment(), HomeClickCallback {
+class MyVideoFragment : DataFragment(), HomeClickCallback {
 
 
     lateinit var binding: FragmentMyVideoBinding
@@ -82,7 +82,7 @@ class MyVideoFragment : LoadDataFragment(), HomeClickCallback {
 
 
     override fun onClick(movieItem: MovieItem) {
-        nav?.onGoPlayVideo(movieItem)
+        nav?.onGoPlayVideo(movieItem, MoviePlayActivity.FROM_MY_VIDEO)
     }
 
     override fun onClickChannel(channel: Channel) {

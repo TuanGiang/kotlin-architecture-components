@@ -16,9 +16,9 @@ import com.giangnt.kidtube.model.User
  * Copyright 2011 - 2016 ARIS-VN, Inc. All rights reserved.
  * Created by: giang.nt on 10:44 AM - 4/16/2018
  * Email: giang.nt@aris-vn.com
- * Location: com.giangnt.kidtube.base.viewmodel - LoginViewModel
+ * Location: com.giangnt.kidtube.base.viewmodel - BaseViewModel
  */
-public abstract class LoginViewModel(application: Application) : AndroidViewModel(application) {
+public abstract class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
     val userLogin: MutableLiveData<User>
 

@@ -1,6 +1,6 @@
 package com.giangnt.kidtube.history
 
-import com.giangnt.kidtube.base.fragment.LoadDataFragment
+import com.giangnt.kidtube.base.fragment.DataFragment
 
-class HistoryFragment : LoadDataFragment(){
+class HistoryFragment : DataFragment(){
 }

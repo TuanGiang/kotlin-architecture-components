@@ -7,23 +7,21 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.giangnt.kidtube.R
 import com.giangnt.kidtube.action.ActionType
 import com.giangnt.kidtube.action.ClickActionCallBack
-import com.giangnt.kidtube.base.fragment.LoadDataFragment
+import com.giangnt.kidtube.base.fragment.DataFragment
 import com.giangnt.kidtube.databinding.FragmentChannelHomeBinding
 import com.giangnt.kidtube.home.HomeAdapter
 import com.giangnt.kidtube.home.HomeClickCallback
 import com.giangnt.kidtube.model.Channel
 import com.giangnt.kidtube.model.MovieItem
+import com.giangnt.kidtube.movie.MoviePlayActivity
 import com.giangnt.kidtube.nav.MovieNav
 import com.giangnt.kidtube.repo.Repo
-import com.giangnt.kidtube.support.EndlessRecyclerViewScrollListener
 
 /**
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -34,7 +32,7 @@ import com.giangnt.kidtube.support.EndlessRecyclerViewScrollListener
  * Email: giang.nt@aris-vn.com
  * Location: com.giangnt.kidtube.channel - ChannelHomeFragment
  */
-class ChannelHomeFragment : LoadDataFragment(), HomeClickCallback, ClickActionCallBack {
+class ChannelHomeFragment : DataFragment(), HomeClickCallback, ClickActionCallBack {
 
     lateinit var channel: Channel
     lateinit var model: ChannelHomeViewModel
@@ -97,8 +95,7 @@ class ChannelHomeFragment : LoadDataFragment(), HomeClickCallback, ClickActionCa
     }
 
     override fun onClick(movieItem: MovieItem) {
-        val items = ArrayList<MovieItem>()
-        nav?.onGoPlayVideo(movieItem)
+        nav?.onGoPlayVideo(movieItem, MoviePlayActivity.FROM_CHANNEL)
     }
 
     override fun onClickChannel(channel: Channel) {
